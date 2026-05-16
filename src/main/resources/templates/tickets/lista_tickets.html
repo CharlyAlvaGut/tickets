@@ -1,0 +1,270 @@
+<div th:replace="fragmentos/top::top"></div>
+<!-- page content -->
+<div class="right_col" role="main" style="padding-bottom: 100px;">
+	<section class="content">
+		<div class="container-fluid">
+			<div class="card">
+				<div class="card-header">
+					<div class="container">
+						<h3 th:text="${titulo}"></h3>
+						<p th:text="${texto}"></p>
+						<form id="formFiltros" th:if="${mostrarForm}" th:action="@{/ordenes/buscar}" method="get"
+							class="container mt-3">
+							<div class="row g-3 align-items-end">
+								<div class="col-md-2">
+									<label for="ticketId" class="form-label">ID:</label>
+									<input type="number" class="form-control" id="ticketId" name="ticketId">
+								</div>
+
+								<div class="col-md-2">
+									<label for="anio" class="form-label">Año:</label>
+									<input type="number" class="form-control" id="anio" name="anio">
+								</div>
+
+								<div class="col-md-4">
+									<label for="asunto" class="form-label">Asunto:</label>
+									<input type="text" class="form-control" id="asunto" name="asunto">
+								</div>
+
+								<div class="col-md-4">
+									<label for="area" class="form-label">Área:</label>
+									<select class="custom-select custom-select" id="area" name="area">
+										<option value="" selected>Seleccione un área</option>
+										<option th:each="a : ${areas}" th:value="${a.c_i_adscrip}"
+											th:text="${a.d_v_nombre}"></option>
+									</select>
+								</div>
+							</div>
+							<div class="row g-3 align-items-end mt-2">
+								<div class="col-md-3">
+									<label for="fechaIni" class="form-label">Inicio:</label>
+									<input type="date" class="form-control" id="fechaIni" name="fechaIni">
+								</div>
+
+								<div class="col-md-3">
+									<label for="fechaFin" class="form-label">Final:</label>
+									<input type="date" class="form-control" id="fechaFin" name="fechaFin">
+								</div>
+
+								<div class="col-md-2 d-flex align-items-end">
+									<button type="submit" class="btn btn-primary w-100">Buscar</button>
+								</div>
+							</div>
+						</form>
+
+					</div>
+				</div>
+				<div th:if="${mensaje != null}" class="alert alert-success" role="alert" th:text="${mensaje}"></div>
+				<div class="card-body">
+					<table id="table1" name="table1" class="table table-hover">
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">ID</th>
+								<th scope="col">Año</th>
+								<th scope="col">Fecha</th>
+								<th scope="col">Solicita</th>
+								<th scope="col">Asunto</th>
+								<th scope="col" th:if="${mostrarForm}">Asignado</th>
+								<th scope="col" th:if="${mostrarForm}">Estado</th>
+								<th scope="col">Acciones</th>
+
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:if="${tickets == null or #lists.isEmpty(tickets)}">
+								<td colspan="8" class="text text-center">¡No existen registros para mostrar!</td>
+							</tr>
+							<tr th:each="ticket : ${tickets}">
+								<td th:text="${ticket.pk_i_ticket}"></td>
+								<td th:text="${ticket.pk_i_anio}"></td>
+								<td th:text="${#dates.format(ticket.fecha, 'dd-MM-yyyy')}"></td>
+								<td th:text="${ticket.solicitante}"></td>
+								<td th:text="${#strings.abbreviate(ticket.asunto,70)}"></td>
+								<td th:text="${ticket.asignado}" th:if="${mostrarForm}"></td>
+
+								<td th:if="${mostrarForm}" th:switch="${ticket.pk_i_estado}">
+									<span class="badge badge-success" th:case="1">ABIERTO</span>
+									<span class="badge badge-danger" th:case="2">CERRADO</span>
+									<span class="badge badge-warning" th:case="3">VENCIDO</span>
+								</td>
+
+								<td>
+									<a th:href="@{/ordenes/detalle/{pk_i_ticket}/{pk_i_anio}(pk_i_ticket=${ticket.pk_i_ticket}, pk_i_anio=${ticket.pk_i_anio})}"
+										class="btn btn-info btn-sm" title="Ver Ticket">
+										<i class="fa fa-info-circle" aria-hidden="true"></i>
+									</a>
+									<!--
+									<a th:href="@{/ordenes/reporte/{pk_i_ticket}/{pk_i_anio}(pk_i_ticket=${ticket.pk_i_ticket}, pk_i_anio=${ticket.pk_i_anio})}"
+										class="btn btn-success btn-sm" title="Imprimir Ticket" target="_blank">
+										<i class="fa fa-print" aria-hidden="true"></i>
+									</a>
+									-->
+									<a href="#" class="btn btn-success btn-sm imprimir-ticket" title="Imprimir Ticket"
+										target="_blank"
+										th:data-url="@{/ordenes/reporte/{pk_i_ticket}/{pk_i_anio}(pk_i_ticket=${ticket.pk_i_ticket}, pk_i_anio=${ticket.pk_i_anio})}">
+										<i class="fa fa-print" aria-hidden="true"></i>
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+		</div>
+	</section>
+	<div class="clearfix"></div>
+
+</div>
+<footer th:replace="fragmentos/footer :: pie-pagina"></footer>
+</div>
+<div th:replace="fragmentos/scripts :: librerias-js"></div>
+
+</body>
+<script>
+	//Código JS
+	$(document).ready(function () {
+		setearFechasPorDefecto();
+
+		var tabla = $('#table1').DataTable({
+			"pageLength": 10,
+			ordering: false
+
+		});
+
+		$('#formFiltros').on('submit', function (e) {
+
+			const fechaIni = $('#fechaIni').val().trim();
+			const fechaFin = $('#fechaFin').val().trim();
+
+			if (!validarRangoFechas(fechaIni, fechaFin)) {
+				e.preventDefault();
+				return;
+			}
+
+			if (!fechaIni && !fechaFin) {
+				e.preventDefault();
+				$('#formFiltros')[0].submit();
+
+			}
+		});
+
+		$('#ticketId').on('change', function () {
+			const anioActual = new Date().getFullYear();
+			$('#anio').val(anioActual);
+		});
+
+		$('#fechaIni').on('change', function () {
+			const hoy = new Date();
+
+			const yyyy = hoy.getFullYear();
+			const mm = String(hoy.getMonth() + 1).padStart(2, '0'); 
+			const dd = String(hoy.getDate()).padStart(2, '0');
+
+			const fechaActual = `${yyyy}-${mm}-${dd}`;
+
+			$('#fechaFin').val(fechaActual);
+		});
+
+
+
+
+
+		$('#table1').on('click', '.imprimir-ticket', function (e) {
+			e.preventDefault();
+			var url = $(this).data('url');
+
+			Swal.fire({
+				title: '¿Desea imprimir las notas internas?',
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonColor: '#28a745',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Sí, imprimir',
+				cancelButtonText: 'No'
+			}).then((result) => {
+				let imprimirVal = result.isConfirmed ? 1 : 0;
+				let separator = url.includes('?') ? '&' : '?';
+				let urlConParametro = url + separator + 'notas=' + imprimirVal;
+				window.open(urlConParametro, '_blank');
+			});
+		});
+	});
+
+	function setearFechasPorDefecto() {
+		const hoy = new Date();
+
+		const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+		const dia = String(hoy.getDate()).padStart(2, '0');
+		const anioActual = new Date().getFullYear();
+		const fechaHoy = `${anioActual}-${mes}-${dia}`;
+		/* Se bloquean fechas futuras y se coloca por defecto la fecha actual en el campo "Fecha Final"
+		   A su vez se bloquean fechas anteriores al primer ticket creado, debido a que antes de esa fecha
+		   no existen datos que mostrar. 
+		*/
+		//$('#fechaFin').val(fechaHoy);
+
+		$('#fechaIni').attr('max', fechaHoy);
+		$('#fechaFin').attr('max', fechaHoy);
+		$('#fechaIni').attr('min', '2025-11-03');
+		$('#fechaFin').attr('min', '2025-11-03');
+	}
+
+
+
+	function validarRangoFechas(fechaIni, fechaFin) {
+		const hoy = new Date();
+		hoy.setHours(0, 0, 0, 0);
+
+		// Caso 1: solo inicio
+		if (fechaIni && !fechaFin) {
+			Swal.fire('Falta fecha', 'Ingrese la fecha final', 'warning');
+			return false;
+		}
+
+		// Caso 2: solo final
+		if (!fechaIni && fechaFin) {
+			Swal.fire('Falta fecha', 'Ingrese la fecha inicial', 'warning');
+			return false;
+		}
+
+
+		if (fechaIni) {
+			const fechaIniD = new Date(fechaIni);
+			fechaIniD.setHours(0, 0, 0, 0);
+
+			if (fechaIniD > hoy) {
+				Swal.fire(
+					'Fecha inválida',
+					'La fecha inicial debe ser menor o igual a la fecha actual',
+					'warning'
+				);
+				return false;
+			}
+		}
+
+
+		if (fechaIni && fechaFin) {
+			const fechaIniD = new Date(fechaIni);
+			const fechaFinD = new Date(fechaFin);
+
+			if (fechaFinD < fechaIniD) {
+				Swal.fire(
+					'Rango inválido',
+					'La fecha final no puede ser menor a la inicial',
+					'error'
+				);
+				return false;
+			}
+		}
+
+		// Todo OK
+		return true;
+	}
+
+
+
+
+</script>
+
+</html>

@@ -1,0 +1,142 @@
+@charset "utf-8";
+/* CSS Document */
+
+  /*input[type=text]{
+  	border-left:none;
+  	border-right:none;
+  	border-top:none;
+  	background-color: #fff;
+  }*/
+  
+    table tbody tr td{
+        vertical-align: middle;
+    }
+
+  /*************** Validate ***************/
+  
+	a.myErrorClass, ul.myErrorClass, input.myErrorClass, textarea.myErrorClass, select.myErrorClass {
+	    border-width: 1px !important;
+	    border-style: solid !important;
+	    border-color: #FCD3A1 !important;
+	    background-color: #FBF8EE !important;
+	    background-position: 50% 50% !important;
+	    background-repeat: repeat !important;
+	}
+	
+	label.myErrorClass {
+	    border-width: 1px !important;
+	    border-style: solid !important;
+	    border-color: #FCD3A1 !important;
+	    border-radius: 6px;
+	    background: url("images/ui-bg_flat_75_ffffff_40x100.png") repeat-x scroll 50% 50% #FFF;
+	    color: #333333;
+	    font-size: 11px;
+	    display: block;
+	    width: 200px;
+	    padding-left: 10px;
+	}  
+  
+/*************** Alerts ***************/
+
+.alert-box {
+    border-radius: 5px;
+    margin: 10px 0px;
+    padding: 15px 10px 15px 50px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    font-family: Tahoma, Geneva, Arial, sans-serif;
+    font-size: 14px;
+    text-align: center;
+    width: auto;
+    color: #696666;
+    text-transform: uppercase;
+}
+
+.alert-box span {
+    color: #696666;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.info {
+    border-color: #00529B;
+    background-color: #BDE5F8;
+    background-image: url('../img/icons/info.jpg');
+}
+
+.exito {
+    border-color: #4F8A10;
+    background-color: #DFF2BF;
+    background-image: url('../img/icons/exito.jpg');
+}
+
+.atencion {
+    border-color: #9F6000;
+    background-color: #FEEFB3;
+    background-image: url('../img/icons/atencion.jpg');
+}
+
+.error {
+    border-color: #D8000C;
+    background-color: #FFBABA;
+    background-image: url('../img/icons/error.jpg');
+}
+
+.envio {
+    border-color: #4F8A10;
+    background-color: #DFF2BF;
+    background-image: url('../img/icons/spinner.gif');
+}
+
+.verde{	
+    text-decoration: none;
+    font-family : Segoe UI, Tahoma, Arial, Verdana, sans-serif;
+    font-weight : bold;
+    font-size: 14px;
+    color: #4F8A10;	
+}
+
+.rojo{	
+    text-decoration: none;
+    font-family : Segoe UI, Tahoma, Arial, Verdana, sans-serif;
+    font-weight : bold;
+    font-size: 14px;
+    color: #E70400;	
+}
+
+.azul{
+    text-decoration: none;
+    font-family : Segoe UI, Tahoma, Arial, Verdana, sans-serif;
+    font-weight : bold;
+    font-size: 14px;
+    color: #030567;	
+}
+
+.amarillo{
+    text-decoration: none;
+    font-family : Segoe UI, Tahoma, Arial, Verdana, sans-serif;
+    font-weight : bold;
+    font-size: 14px;
+    color: #FC0;	
+}
+
+.naranja{
+    text-decoration: none;
+    font-family : Segoe UI, Tahoma, Arial, Verdana, sans-serif;
+    font-weight : bold;
+    font-size: 14px;
+    color: #DF7401;
+}
+
+#loading {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: #F8F476; /*DFFD94*/
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px;
+    width: 80px;
+}

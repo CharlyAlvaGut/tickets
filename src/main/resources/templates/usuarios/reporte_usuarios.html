@@ -1,0 +1,186 @@
+<div th:replace="fragmentos/top::top"></div>
+<!-- page content -->
+<div class="right_col" role="main" style="padding-bottom: 100px;">
+	<section class="content">
+		<div class="container-fluid">
+			<div class="card">
+				<div class="card-header">
+					<h3>Reportes de usuario</h3>
+					<p>Consulta estadísticas de usuarios</p>
+					<form th:action="@{/usuarios/reporte}" method="get" class="form-inline">
+						<label>Inicio: </label>&nbsp;
+						<input type="date" class="form-control mb-3" name="fechaIni" id="fech_in">&nbsp;
+
+						<label>Final: </label>&nbsp;
+						<input type="date" class="form-control mb-3" name="fechaFin" id="fech_fin">&nbsp;
+						<button type="submit" class="btn btn-primary mb-3">Buscar</button>
+					</form>
+				</div>
+				<div class="card-body">
+
+					<table id="tickets_usuarios" name="usuarios" class="table table-hover">
+						<h3 class="text-center">Tickets por usuario</h3>&nbsp;
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">Nombre</th>
+								<th scope="col">Abiertos/En espera</th>
+								<th scope="col">Cerrados/ Atendidos</th>
+								<th scope="col">Totales</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="u : ${ticketsUsuarios}">
+								<td th:text="${u.area}">Nombre</td>
+								<td th:text="${u.cantidad_abiertos}">Abiertos</td>
+								<td th:text="${u.cantidad_cerrados}">Cerrados</td>
+								<td th:text="${u.cantidad_totales}">Totales</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<hr>
+					<table id="tickets_asignados" name="asignados" class="table table-hover">
+						<h3 class="text-center">Tickets asignados por área</h3>&nbsp;
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">Area</th>
+								<th scope="col">Abiertos/En espera</th>
+								<th scope="col">Cerrados/ Atendidos</th>
+								<th scope="col">Totales</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="t : ${tickets}">
+								<td th:text="${t.area}">Area</td>
+								<td th:text="${t.cantidad_abiertos}">Abiertos</td>
+								<td th:text="${t.cantidad_cerrados}">Cerrados</td>
+								<td th:text="${t.cantidad_totales}">Totales</td>
+							</tr>
+						</tbody>
+					</table>
+					<hr>
+					<table id="tickets_area_ayuda" name="ayuda" class="table table-hover">
+						<h3 class="text-center">Tickets asignados por asunto</h3>&nbsp;
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">Area</th>
+								<th scope="col">Abiertos/En espera</th>
+								<th scope="col">Cerrados/ Atendidos</th>
+								<th scope="col">Totales</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="ayuda : ${ticketsAyuda}">
+								<td th:text="${ayuda.area}">Area</td>
+								<td th:text="${ayuda.cantidad_abiertos}">Abiertos</td>
+								<td th:text="${ayuda.cantidad_cerrados}">Cerrados</td>
+								<td th:text="${ayuda.cantidad_totales}">Totales</td>
+							</tr>
+						</tbody>
+					</table>
+					<hr>
+					<table id="tickets_solicitados" name="solicitados" class="table table-hover">
+						<h3 class="text-center">Tickets solicitados por área</h3>&nbsp;
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">Area</th>
+								<th scope="col">Abiertos/En espera</th>
+								<th scope="col">Cerrados/ Atendidos</th>
+								<th scope="col">Totales</th>
+							</tr>
+						</thead>
+						<tbody>
+
+							<tr th:each="a : ${ticketsAreas}">
+								<td th:text="${a.area}">Area</td>
+								<td th:text="${a.cantidad_abiertos}">Abiertos</td>
+								<td th:text="${a.cantidad_cerrados}">Cerrados</td>
+								<td th:text="${a.cantidad_totales}">Totales</td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</section>
+	<br>
+	<br>
+	<div class="clearfix"></div>
+
+</div>
+</div>
+<footer th:replace="fragmentos/footer :: pie-pagina"></footer>
+</div>
+<div th:replace="fragmentos/scripts :: librerias-js"></div>
+<script>
+	/**/
+	$(function () {
+		$('#form1').submit(function (e) {
+			e.preventDefault();
+			$.ajax({
+				type: $(this).attr('method'),
+				url: $(this).attr('action'),
+				data: $(this).serialize(),
+				success: function () {
+					setTimeout(function () {
+						location.reload();
+					}, 1500);
+				},
+				error: function (xhr) {
+					messageErr("Error: " + xhr.responseText);
+				}
+			});
+		});
+
+
+		//Asignar fechas actuales
+		setFecha();
+
+		// Asignar paginados a las tablas
+		$('#tickets_usuarios').DataTable({
+			"pageLength": 10
+		});
+		$('#tickets_asignados').DataTable({
+			"pageLength": 10
+		});
+		$('#tickets_area_ayuda').DataTable({
+			"pageLength": 10
+		});
+		$('#tickets_solicitados').DataTable({
+			"pageLength": 10
+		});
+
+	});
+
+	function setFecha() {
+		const fechaActual = new Date();
+
+		// Fecha de inicio
+		const año = fechaActual.getFullYear();
+		const mes = String(fechaActual.getMonth() + 1).padStart(2, '0');
+		const dia = String(fechaActual.getDate()).padStart(2, '0');
+		const fechaFormateada = `${año}-${mes}-${dia}`;
+
+		$('#fech_in').val(fechaFormateada);
+		$('#fech_in').attr('max', fechaFormateada);
+
+		// Fecha de término: un mes después
+		const fechaTermino = new Date(fechaActual);
+		fechaTermino.setMonth(fechaTermino.getMonth() + 1);
+
+		const año_ter = fechaTermino.getFullYear();
+		const mes_ter = String(fechaTermino.getMonth() + 1).padStart(2, '0');
+		const dia_ter = String(fechaTermino.getDate()).padStart(2, '0');
+		const fechaFormateada_ter = `${año_ter}-${mes_ter}-${dia_ter}`;
+
+		$('#fech_fin').val(fechaFormateada_ter);
+		$('#fech_fin').attr('max', fechaFormateada_ter);
+	}
+
+
+	//*/
+</script>
+</body>
+
+</html>

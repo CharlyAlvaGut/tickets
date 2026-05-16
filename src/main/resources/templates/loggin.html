@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>SIC - PBI</title>
+	<meta name="author" content="Policía Bancaria e Industrial">
+	<meta name="description" content="Sistema de Tickets">
+	<meta name="keywords" content="Tickets">
+	<meta name="robots" content="noindex">
+	<meta name="googlebot" content="noindex">
+	<link rel="shortcut icon" th:href="@{assets/img/favicon.ico}">
+
+	<link th:href="@{/assets/css/bootstrap/bootstrap.min.css}" rel="stylesheet">
+	<link th:href="@{/assets/css/font/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
+	<link th:href="@{/assets/css/jquery-ui/jquery-ui.css}" rel="stylesheet" type="text/css">
+
+	<link th:href="@{/assets/css/sweetalert2-theme-bootstrap4.min.css}" rel="stylesheet" type="text/css">
+	<link th:href="@{/assets/css/estilos.css}" rel="stylesheet" type="text/css">
+	<link th:href="@{/assets/css/alertas.css}" rel="stylesheet" type="text/css">
+	<link th:href="@{/assets/css/login.css}" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+	<style>
+		.front {
+			background: url("[[@{/assets/img/logo_pbi.png}]]")0 0 no-repeat;
+		}
+
+		.back {
+			transform: rotateY(180deg);
+			background: url("[[@{/assets/img/logo_pbi.png}]]")0 0 no-repeat;
+		}
+	</style>
+
+
+	<!-- Page Content -->
+	<div class="container">
+		<div class="card card-login mx-auto mt-5 mb-5">
+		  <div class="card-header">
+		    <div class="logo-circle">IPN</div>
+		    <h5 class="text-center">Portal de Servicios IPN</h5>
+		    <p class="version">Versión 1.0</p>
+		    <p class="subtitulo">Órden de Servicio</p>
+		  </div>
+
+		  <div class="card-body">
+		    <form name="form" th:action="@{/login}" method="post" class="form-signin">
+		      <div class="input-group margin-bottom-sm">
+		        <span class="input-group-addon"><i class="fa fa-envelope fa-lg"></i></span>
+		        <input type="text" name="username" class="form-control"
+		          placeholder="Correo institucional" />
+		      </div>
+		      <div class="input-group margin-bottom-sm">
+		        <span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span>
+		        <input type="password" name="password" class="form-control"
+		          placeholder="Contraseña" />
+		      </div>
+		      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+		      <input type="submit" value="Iniciar sesión" class="btn btn-success btn-block" />
+		    </form>
+		    <div class="alert alert-danger mt-3" role="alert" th:if="${param.error}">
+		      <p class="text text-center mb-0">Usuario o contraseña incorrectos</p>
+		    </div>
+		  </div>
+
+		  <div class="card-footer-custom">
+		    Instituto Politécnico Nacional &nbsp;·&nbsp; Todos los derechos reservados
+		  </div>
+		</div>
+
+		<script src="assets/js/jquery/jquery.min.js" type="application/javascript"></script>
+		<script src="assets/js/jquery-ui/jquery-ui.js" type="application/javascript"></script>
+		<script src="assets/js/bootstrap.bundle.min.js" type="application/javascript"></script>
+
+		<script>
+			$(function () {
+				$('#flippr .flipper').addClass('logged-in');
+				$('#flippr .flipper').addClass('logged-in2');
+
+			});
+
+		</script>
+
+</body>
+
+</html>

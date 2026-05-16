@@ -1,0 +1,310 @@
+<div th:replace="fragmentos/top::top"></div>
+<!-- page content -->
+<div class="right_col" role="main" style="padding-bottom: 100px;">
+	<section class="content">
+		<div class="container-fluid">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title" th:text="${titulo}"></h3>
+				</div>
+				<div th:if="${error != null}" class="alert alert-danger" role="alert" th:text="${error}"></div>
+
+				<div class="card-body">
+					<form id="ticketForm" th:action="@{/ordenes/guardar}" method="post" th:object="${ticketDTO}"
+						enctype="multipart/form-data">
+						<input type="hidden" th:field="*{pk_i_ticket}" />
+						<input type="hidden" th:field="*{pk_i_anio}" />
+						<div class="form-group">
+							<div class="form-group">
+								<label for="nombre">Solicita</label>
+								<input type="text" id="numemp" class="form-control" value="" required>
+								<input id="numempId" th:field="*{c_i_numemp}" type="hidden">
+								<input id="numempAds" th:field="*{c_i_adscrip}" type="hidden">
+								<input id="nombreSolicitante" type="hidden">
+							</div>
+
+						</div>
+						<div class="form-group">
+							<label for="tema">Área asignada</label>
+							<select th:field="*{c_i_adscripasigna}" id="areas" class="form-control" required>
+								<option th:value="${null}">--</option>
+								<option th:each="a:${areas}" th:value="${a.c_i_adscrip}" th:text="${a.d_v_nombre}"
+									th:attr="data-vig=${a.pk_i_vigencia}">
+								</option>
+							</select>
+							<input id="vig" th:field="*{pk_i_vigencia}" type="hidden">
+						</div>
+						<div class="form-group">
+							<label for="asignar">Asignar a</label>
+							<select th:field="*{c_i_numempasigna}" id="asignar" class="form-control">
+								<option th:value="${null}">Seleccione un área</option>
+							</select>
+							<input type="hidden" id="asignadoId" th:value="${ticketDTO.c_i_numempasigna}">
+						</div>
+						<div class="form-group">
+							<label for="fuente">Fuente del Ticket</label>
+							<select th:field="*{pk_i_fuente}" id="fuenteTicket" class="form-control">
+								<option th:value="${null}">--</option>
+								<option th:each="f:${fuentes}" th:value="${f.pk_i_fuente}" th:text="${f.d_v_fuente}">
+								</option>
+							</select>
+
+						</div>
+						<!--
+						<div class="form-group">
+							<label for="areaAyuda">Área de ayuda</label>
+							<select id="areaAyuda" name="pk_i_asunto" class="form-control" required>
+								<option th:value="${null}">--</option>
+								<option th:each="a : ${asuntos}" th:value="${a.pk_i_asunto}" th:text="${a.d_v_asunto}">
+								</option>
+							</select>
+							<input id="asuntoID" type="hidden" th:field="*{pk_i_asunto}">
+						</div>
+						-->
+						<div class="form-group">
+							<label for="asunto">Asunto</label>
+							<textarea th:field="*{d_v_asunto}" id="descripcion" class="form-control" rows="6"
+								required></textarea>
+							<input id="pk_i_folio" th:field="*{pk_i_folio}" type="hidden">
+						</div>
+						<div class="form-group">
+							<label for="adjuntos">Adjuntos</label>
+							<input th:field="*{d_b_documento}" type="file" class="form-control"
+								accept="application/pdf, image/png, image/jpeg" id="adjuntos">
+							<input th:field="*{d_v_nomdocto}" type="hidden" id="d_v_nomdocto">
+						</div>
+						<br>
+						<div class="form-group">
+							<button id="btnEnviar" type="submit" class="btn btn-primary">Generar Ticket</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+	<div class="clearfix"></div>
+</div>
+
+
+<div class="modal fade" id="memorandumModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Información del documento</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="memoForm">
+					<div class="form-group">
+						<label>Área que recibe:</label>
+						<select name="c_i_ads_recibe" class="form-control">
+							<option value="">--</option>
+							<option th:each="ads:${adscripciones}" th:value="${ads.c_i_adscrip}"
+								th:text="${ads.c_i_adscrip} + ' - ' + ${ads.d_v_nombre}">
+							</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label>Folio del área que recibe:</label>
+						<input name="d_n_folio_arearec" type="number" class="form-control">
+					</div>
+					<div class="form-group">
+						<label>Fecha de recepción:</label>
+						<input name="d_f_fech_recibio" id="d_f_fech_recibio" type="date" class="form-control">
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+						<button type="button" class="btn btn-primary" id="btnBuscarMemo">Aceptar</button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<footer th:replace="fragmentos/footer :: pie-pagina"></footer>
+</div>
+<div th:replace="fragmentos/scripts :: librerias-js"></div>
+<script>
+
+	const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1 MB
+	const ALLOWED_TYPES = ['application/pdf', 'image/png', 'image/jpeg'];
+
+
+	function recargarLista(selectedEmpleadoId = null) {
+		let adscrip = $('#areas').val();
+		$.ajax({
+			type: "GET",
+			url: "/tickets/ordenes/buscarea/" + adscrip,
+			success: function (response) {
+				$("#asignar").empty();
+				$.each(response, function (i, persona) {
+					$("#asignar").append(
+						$("<option>", {
+							value: persona.c_i_usuario,
+							text: persona.d_v_nombre + " | " + persona.d_v_email
+						})
+					);
+				});
+				if (selectedEmpleadoId) {
+					$("#asignar").val(selectedEmpleadoId);
+				}
+			},
+			error: function () {
+				console.error("Error al cargar personal por área");
+			}
+		});
+	}
+
+	function setFecha() {
+		const fechaActual = new Date();
+		const año = fechaActual.getFullYear();
+		const mes = String(fechaActual.getMonth() + 1).padStart(2, '0');
+		const dia = String(fechaActual.getDate()).padStart(2, '0');
+
+		const fechaFormateada = `${año}-${mes}-${dia}`;
+
+		$('#d_f_fech_recibio').val(fechaFormateada);
+		$('#d_f_fech_recibio').attr('max', fechaFormateada);
+	}
+
+
+	$(function () {
+
+
+		$('#adjuntos').on('change', function () {
+			const maxFileSize = 1 * 1024 * 1024; // 1 MB
+			const file = this.files[0];
+
+			if (file && file.size > maxFileSize) {
+				messageErr("El archivo no puede pesar más de 1MB!");
+				$(this).val('');
+			}
+		});
+
+
+		/**/
+		//Autocompletar
+		$("#numemp").autocomplete({
+			source: function (request, response) {
+				$.getJSON('buscaelementos', {palabra: request.term}, function (data) {
+					response(data.map(function (u) {
+						return {
+							label: u.d_v_nombre,
+							//value: u.c_i_usuario + " | " + u.d_v_nombre + " | " + u.c_i_adscripNva,
+							value: u.d_v_nombre + " | " + u.c_i_adscripNva,
+							id: u.c_i_usuario,
+							adscrip: u.c_i_adscrip
+						};
+					}));
+				});
+			},
+			minLength: 2,
+			select: function (event, ui) {
+				$("#numempId").val(ui.item.id);
+				$("#numempAds").val(ui.item.adscrip);
+
+			}
+		}).autocomplete("instance")._renderItem = function (ul, item) {
+			return $("<li>")
+				.append("<div><strong>" + item.id + "</strong> | " + item.label + "</div>")
+				.appendTo(ul);
+		};
+
+
+
+		// Selects relacionados
+		$('#areas').change(function () {
+			let vigencia = $(this).find("option:selected").data("vig");
+			$("#vig").val(vigencia);
+			console.log(vigencia);
+			recargarLista();
+
+		});
+
+
+		//Obtener el nombre del documento
+		$('#adjuntos').change(function () {
+			if (this.files.length > 0) {
+				var a = $('#d_v_nomdocto').val(this.files[0].name);
+				console.log(a.val());
+			}
+
+		});
+
+		//Mostramos el modal de los datos del memorándum
+		$('#fuenteTicket').change(function () {
+			var selectedValue = $(this).val();
+			if (selectedValue == '1') {
+				$('#memorandumModal').modal('show');
+			}
+		});
+
+
+		$('#btnBuscarMemo').click(function () {
+			$.ajax({
+				url: '/tickets/ordenes/obtenermemo',
+				type: 'GET',
+				dataType: 'json',
+				data: {
+					c_i_ads_recibe: $('select[name="c_i_ads_recibe"]').val(),
+					d_n_folio_arearec: $('input[name="d_n_folio_arearec"]').val(),
+					d_f_fech_recibio: $('input[name="d_f_fech_recibio"]').val()
+				},
+				success: function (data) {
+					if (data.length > 0) {
+						let memo = data[0];
+						let texto = "\n\n"
+							+ "Memorándum: " + memo.d_v_numdocto + "\n"
+							+ "Folios: " + memo.d_n_folio_arearec + "\n"
+							+ "Fecha de emisión: " + memo.f_d_fechcap + "\n"
+							+ "Fecha de recepción: " + memo.d_f_fech_recibio;
+
+						$('#memorandumModal').modal('hide');
+						$('#pk_i_folio').val(memo.pk_i_folio);
+						$('#descripcion').val(texto);
+
+					} else {
+						messageErr("No se encontró la información del documento ingresado!!!");
+					}
+
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					console.error("Error al obtener datos:", textStatus, errorThrown);
+				}
+			});
+		});
+		setFecha();
+
+		let numempId = $("#numempId").val();
+		let asignadoId = $("#asignadoId").val();
+		let asuntoId = $("#asuntoID").val();
+
+
+		if (numempId && asignadoId && asuntoId) {
+			//$('#numemp').val(numempId);
+			$('#btnEnviar').text('Actualizar Ticket');
+
+			$.getJSON('buscaelementos', {palabra: numempId}, function (data) {
+				let usuario = data.find(u => u.c_i_usuario == numempId);
+				if (usuario) {
+					//let valor = usuario.c_i_usuario + " | " + usuario.d_v_nombre + " | " + usuario.c_i_adscrip;
+					let valor = usuario.d_v_nombre + " | " + usuario.c_i_adscrip;
+					$("#numemp").val(valor);
+					$("#numempAds").val(usuario.c_i_adscrip);
+				}
+			});
+
+			recargarLista(asignadoId);
+			$("#areaAyuda").val(asuntoId);
+		}
+	});
+</script>
+</body>
+
+</html>
