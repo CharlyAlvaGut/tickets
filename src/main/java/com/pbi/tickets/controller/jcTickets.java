@@ -81,20 +81,20 @@ public class jcTickets {
 	@GetMapping("/crear")
 	public String crearTickets(Model model) {
 		model.addAttribute("titulo", "Nuevo Ticket");
-		//model.addAttribute("asuntos", serviceTickets.obtenerAsuntos());
 		return "tickets/form_tickets";
 	}
 
 	@GetMapping("/detalle/{pk_i_ticket}/{pk_i_anio}")
 	public String detalleTicket(@PathVariable("pk_i_ticket") int pk_i_ticket, @PathVariable("pk_i_anio") int pk_i_anio,
 			Model modelo) {
-		/*
+		/**/
 		CabeceraDTO cabecera = serviceTickets.obtenerCabecera(pk_i_ticket, pk_i_anio);
 		List<HiloDTO> hilo = serviceTickets.obtenerHilo(pk_i_ticket, pk_i_anio);
 		modelo.addAttribute("cabecera", cabecera);
 		modelo.addAttribute("hilo", hilo);
-		modelo.addAttribute("personal", serviceUsuario.obtenerTodosDTI());
-		*/
+		modelo.addAttribute("areas", serviceVigencia.obtenerAreas());
+		modelo.addAttribute("adscripciones", serviceVigencia.obtenerAdscripcionesArea());
+		//*/
 		modelo.addAttribute("detalleDTO", new DetalleDTO());
 		return "tickets/detalle_tickets";
 	}
@@ -103,14 +103,16 @@ public class jcTickets {
 	public String cerrarTicket(@PathVariable("pk_i_estado") int pk_i_estado,
 			@PathVariable("pk_i_ticket") int pk_i_ticket, @PathVariable("pk_i_anio") int pk_i_anio,
 			RedirectAttributes atributos, HttpSession session) {
-		/*
+		/**/
 		CUsuario user = (CUsuario) session.getAttribute("usuario");
 		if (user != null) {
 			serviceTickets.cerrarTicket(pk_i_ticket, pk_i_anio, user.getC_i_usuario(), pk_i_estado);
 		}
-		*/
+		
+		//*/
 		atributos.addFlashAttribute("mensaje", "El ticket ha sido cerrado con éxito!!!");
-		return "redirect:/ordenes/mostrar";
+		//return "redirect:/ordenes/mostrar";
+		return "redirect:/ordenes/detalle/" + pk_i_ticket + "/" + pk_i_anio;
 	}
 
 	@GetMapping("/mostrar")
@@ -195,7 +197,7 @@ public class jcTickets {
 	@GetMapping("/editar/{anio}/{ticketId}")
 	public String editarTicket(@PathVariable("ticketId") Integer ticketId, @PathVariable("anio") Integer anio,
 			Model model) {
-		/*
+		/**/
 		TicketDTO ticket = serviceTickets.obtenerTicketPorId(ticketId, anio);
 		ticket.setPk_i_ticket(ticketId);
 		ticket.setPk_i_anio(anio);
@@ -203,7 +205,7 @@ public class jcTickets {
 		model.addAttribute("areas", serviceVigencia.obtenerAreas());
 		model.addAttribute("adscripciones", serviceVigencia.obtenerAdscripcionesArea());
 		model.addAttribute("fuentes", serviceFuentes.obtenerTodo());
-		*/
+		//*/
 		model.addAttribute("titulo", "Editar Ticket N°" + ticketId + "/" + anio);
 
 		return "tickets/form_tickets";
@@ -212,21 +214,21 @@ public class jcTickets {
 	@PostMapping("/respuesta")
 	public String guardarRespuesta(DetalleDTO detalleDTO, @RequestParam Integer pk_i_ticket,
 			@RequestParam Integer pk_i_anio, HttpSession session) {
-		/*
+		/**/
 		if (session.getAttribute("usuario") != null) {
 			CUsuario user = (CUsuario) session.getAttribute("usuario");
 			detalleDTO.setC_n_usucap(user.getC_i_usuario());
 			detalleDTO.setPk_i_respuesta(1); // El tipo 1 hace referencia a "RESPUESTA" en el catálogo
 			serviceDetalle.guardarDetalle(detalleDTO);
 		}
-		*/
+		//*/
 		return "redirect:/ordenes/detalle/" + pk_i_ticket + "/" + pk_i_anio;
 	}
 
 	@PostMapping("/turnado")
 	public String guardarTurnado(DetalleDTO detalleDTO, @RequestParam Integer pk_i_ticket,
 			@RequestParam Integer pk_i_anio, HttpSession session) {
-		/*
+		/**/
 		if (session.getAttribute("usuario") != null) {
 			CUsuario user = (CUsuario) session.getAttribute("usuario");
 			detalleDTO.setC_n_usucap(user.getC_i_usuario());
@@ -234,16 +236,16 @@ public class jcTickets {
 			serviceDetalle.guardarDetalle(detalleDTO);
 
 		}
-		// return "redirect:/ordenes/detalle/" + pk_i_ticket + "/" + pk_i_anio;
+		return "redirect:/ordenes/detalle/" + pk_i_ticket + "/" + pk_i_anio;
 
-		*/
-		return "redirect:/ordenes/mistickets";
+		//*/
+		//return "redirect:/ordenes/mistickets";
 	}
 
 	@PostMapping("/nota")
 	public String guardarNotaInterna(DetalleDTO detalleDTO, @RequestParam Integer pk_i_ticket,
 			@RequestParam Integer pk_i_anio, HttpSession session) {
-		/*
+		/**/
 		if (session.getAttribute("usuario") != null) {
 			CUsuario user = (CUsuario) session.getAttribute("usuario");
 			detalleDTO.setC_n_usucap(user.getC_i_usuario());
@@ -251,7 +253,7 @@ public class jcTickets {
 			serviceDetalle.guardarDetalle(detalleDTO);
 
 		}
-		*/
+		//*/
 		return "redirect:/ordenes/detalle/" + pk_i_ticket + "/" + pk_i_anio;
 	}
 

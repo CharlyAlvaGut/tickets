@@ -114,128 +114,125 @@ public interface ITicketRepository extends JpaRepository<CTicket, CTicketPK> {
 
 	@Query(value = """
 			SELECT
-			  a.pk_i_ticket, a.pk_i_anio,
-			  a.d_f_fecha AS fecha_creacion,
-			  ad_sol.tDescAdscripcion AS adscrip_sol,
-			  CONCAT(p_sol.tApePaterno,' ',p_sol.tApeMaterno, ' ', p_sol.tNombre) AS solicitante,
-			  ad_asig.tDescAdscripcion AS adscrip_asigna,
-			  CONCAT(p_asig.tApePaterno,' ',p_asig.tApeMaterno, ' ', p_asig.tNombre) AS asignado,
-			  b.d_v_estado,
-			  c.d_i_horas AS horas,
-			  a.d_v_asunto AS asunto,
-			  f.d_v_fuente AS fuente,
-			  a.pk_i_estado,
-			  CONCAT(p_cap.tApePaterno,' ',p_cap.tApeMaterno, ' ', p_cap.tNombre) AS captura
+				a.pk_i_ticket, a.pk_i_anio,
+				a.d_f_fecha AS fecha_creacion,
+				ad_sol.d_v_adscrip AS adscrip_sol,
+				p_sol.d_v_nombre AS solicitante,
+				ad_asig.d_v_adscrip AS adscrip_asigna,
+				p_asig.d_v_nombre AS asignado,
+				b.d_v_estado,
+				c.d_i_horas AS horas,
+				a.d_v_asunto AS asunto,
+				f.d_v_fuente AS fuente,
+				a.pk_i_estado,
+				p_cap.d_v_nombre AS captura
 			FROM m_ticket a
 			INNER JOIN c_estado b ON (a.pk_i_estado = b.pk_i_estado)
 			INNER JOIN c_vigencia c ON (a.pk_i_vigencia = c.pk_i_vigencia)
-			INNER JOIN db_pbi_polban.tblRHPersonal p_sol ON a.c_i_numemp = p_sol.nIdNumEmp
-			INNER JOIN db_pbi_polban.tblRHAdscripcionesActual ad_sol ON a.c_i_adscrip = ad_sol.nIdAdscripcion
-			INNER JOIN db_pbi_polban.tblRHPersonal p_asig ON a.c_i_numempasigna = p_asig.nIdNumEmp
-			INNER JOIN db_pbi_polban.tblRHAdscripcionesActual ad_asig ON a.c_i_adscripasigna = ad_asig.nIdAdscripcion
+			INNER JOIN c_usuario p_sol ON a.c_i_numemp = p_sol.c_i_usuario
+			INNER JOIN c_adscrip ad_sol ON a.c_i_adscrip = ad_sol.c_i_adscrip
+			INNER JOIN c_usuario p_asig ON a.c_i_numempasigna = p_asig.c_i_usuario
+			INNER JOIN c_adscrip ad_asig ON a.c_i_adscripasigna = ad_asig.c_i_adscrip
 			INNER JOIN c_fuente f ON (a.pk_i_fuente = f.pk_i_fuente)
-			INNER JOIN db_pbi_polban.tblRHPersonal p_cap ON a.c_n_usucap = p_cap.nIdNumEmp
+			INNER JOIN c_usuario p_cap ON a.c_n_usucap = p_cap.c_i_usuario
 			WHERE a.pk_i_ticket = :pk_i_ticket AND a.pk_i_anio = :pk_i_anio
 								""", nativeQuery = true)
 	CabeceraDTO findCabeceraTicket(@Param("pk_i_ticket") int pk_i_ticket, @Param("pk_i_anio") int pk_i_anio);
 
 	@Query(value = """
 			SELECT
-			   a.pk_i_ticket,
-			   a.pk_i_anio,
-			   'CREACION' AS tipo_evento,
-			   a.c_i_numemp AS actor,
-			   CONCAT(p_sol.tApePaterno,' ',p_sol.tApeMaterno, ' ', p_sol.tNombre) AS nombre_actor,
-			   a.d_f_fechcap AS fecha_evento,
-			   a.d_v_asunto AS descripcion,
-			   doc_asunto.d_v_nomdocto AS documento,
-			   doc_asunto.d_b_documento AS archivo_blob,
-			   doc_asunto.d_n_consec AS consecutivo_documento,
-			   '' AS asignado,
-			   ad.tDescAdscripcion AS adscripcion,
-			   CONCAT(ad.tDescAdscripcion, ' - ', asu.d_v_asunto) AS area_ayuda,
+				 a.pk_i_ticket,
+				 a.pk_i_anio,
+				 'CREACION' AS tipo_evento,
+				 a.c_i_numemp AS actor,
+				 p_sol.d_v_nombre AS nombre_actor,
+				 a.d_f_fechcap AS fecha_evento,
+				 a.d_v_asunto AS descripcion,
+				 doc_asunto.d_v_nomdocto AS documento,
+				 doc_asunto.d_b_documento AS archivo_blob,
+				 doc_asunto.d_n_consec AS consecutivo_documento,
+				 '' AS asignado,
+				 ad.d_v_adscrip AS adscripcion,
+				 '' AS area_ayuda,
 				 a.pk_i_asunto AS pk_i_asunto
 			FROM m_ticket a
 			LEFT JOIN (
-			    SELECT pk_i_ticket, pk_i_anio, d_v_nomdocto, d_b_documento, d_n_consec
-			    FROM d_documento
-			    WHERE pk_i_tipodoc = 1 -- ASUNTO
-			      AND d_b_documento IS NOT NULL
+					SELECT pk_i_ticket, pk_i_anio, d_v_nomdocto, d_b_documento, d_n_consec
+					FROM d_documento
+					WHERE pk_i_tipodoc = 1 -- ASUNTO
+						AND d_b_documento IS NOT NULL
 			) doc_asunto
-			    ON a.pk_i_ticket = doc_asunto.pk_i_ticket AND a.pk_i_anio = doc_asunto.pk_i_anio
-			LEFT JOIN db_pbi_polban.tblRHPersonal p_sol ON a.c_i_numemp = p_sol.nIdNumEmp
-			LEFT JOIN c_asunto asu
-			    ON a.pk_i_asunto = asu.pk_i_asunto
-			LEFT JOIN db_pbi_polban.tblRHAdscripcionesActual ad
-			 ON a.c_i_adscrip = ad.nIdAdscripcion
+					ON a.pk_i_ticket = doc_asunto.pk_i_ticket AND a.pk_i_anio = doc_asunto.pk_i_anio
+			LEFT JOIN c_usuario p_sol ON a.c_i_numemp = p_sol.c_i_usuario
+			LEFT JOIN c_adscrip ad
+			 ON a.c_i_adscrip = ad.c_i_adscrip
 			WHERE a.pk_i_ticket = :pk_i_ticket AND a.pk_i_anio = :pk_i_anio
 
 			UNION ALL
 
 			-- Eventos RESPUESTA / TURNADO / NOTA INTERNA desde d_ticket
 			SELECT
-			   d.pk_i_ticket,
-			   d.pk_i_anio,
-			   UPPER(e.d_v_respuesta) AS tipo_evento,
-			   d.c_n_usucap AS actor,
-			   f.tNombre AS nombre_actor,
-			   d.d_f_fechcap AS fecha_evento,
-			   d.d_v_comentario AS descripcion,
-			   doc_resp.d_v_nomdocto AS documento,
-			   doc_resp.d_b_documento AS archivo_blob,
-			   doc_resp.d_n_consec AS consecutivo_documento,
-			   g.tNombre AS asignado,
-			   f.tDescAdscrip AS adscripcion,
-			   '' AS area_ayuda,
+				 d.pk_i_ticket,
+				 d.pk_i_anio,
+				 UPPER(e.d_v_respuesta) AS tipo_evento,
+				 d.c_n_usucap AS actor,
+				 f.d_v_nombre AS nombre_actor,
+				 d.d_f_fechcap AS fecha_evento,
+				 d.d_v_comentario AS descripcion,
+				 doc_resp.d_v_nomdocto AS documento,
+				 doc_resp.d_b_documento AS archivo_blob,
+				 doc_resp.d_n_consec AS consecutivo_documento,
+				 g.d_v_nombre AS asignado,
+				 fads.d_v_adscrip AS adscripcion,
+				 '' AS area_ayuda,
 				 NULL AS pk_i_asunto
 			FROM d_ticket d
 			INNER JOIN c_respuesta e
-			    ON d.pk_i_respuesta = e.pk_i_respuesta
-			LEFT JOIN v_personal f
-			    ON d.c_n_usucap = f.nIdNumEmp
-			LEFT JOIN v_personal g
-			    ON d.c_i_numemp = g.nIdNumEmp
+					ON d.pk_i_respuesta = e.pk_i_respuesta
+			LEFT JOIN c_usuario f
+					ON d.c_n_usucap = f.c_i_usuario
+			LEFT JOIN c_adscrip fads
+					ON f.c_i_adscri = fads.c_i_adscrip
+			LEFT JOIN c_usuario g
+					ON d.c_i_numemp = g.c_i_usuario
 			LEFT JOIN (
-			    SELECT pk_i_ticket, pk_i_anio, c_n_usucap, d_f_fechcap, d_v_nomdocto, d_b_documento, d_n_consec
-			    FROM d_documento
-			    WHERE pk_i_tipodoc = 2 -- RESPUESTA
-			      AND d_b_documento IS NOT NULL
+					SELECT pk_i_ticket, pk_i_anio, c_n_usucap, d_f_fechcap, d_v_nomdocto, d_b_documento, d_n_consec
+					FROM d_documento
+					WHERE pk_i_tipodoc = 2 -- RESPUESTA
+						AND d_b_documento IS NOT NULL
 			) doc_resp
-			    ON d.pk_i_ticket = doc_resp.pk_i_ticket
-			    AND d.pk_i_anio = doc_resp.pk_i_anio
-			    AND d.c_n_usucap = doc_resp.c_n_usucap
-			    AND d.d_f_fechcap = doc_resp.d_f_fechcap
+					ON d.pk_i_ticket = doc_resp.pk_i_ticket
+					AND d.pk_i_anio = doc_resp.pk_i_anio
+					AND d.c_n_usucap = doc_resp.c_n_usucap
+					AND d.d_f_fechcap = doc_resp.d_f_fechcap
 			LEFT JOIN m_ticket mt
-			    ON d.pk_i_ticket = mt.pk_i_ticket AND d.pk_i_anio = mt.pk_i_anio
-			LEFT JOIN c_asunto asu
-			    ON mt.pk_i_asunto = asu.pk_i_asunto
+					ON d.pk_i_ticket = mt.pk_i_ticket AND d.pk_i_anio = mt.pk_i_anio
 			WHERE d.pk_i_ticket = :pk_i_ticket AND d.pk_i_anio = :pk_i_anio
 
 			UNION ALL
 
 			-- Evento de CIERRE
 			SELECT
-			   h.pk_i_ticket,
-			   h.pk_i_anio,
-			   'CERRADO' AS tipo_evento,
-			   h.c_i_numemp AS actor,
-			   i.tNombre AS nombre_actor,
-			   h.d_f_fechcierre AS fecha_evento,
-			   '' AS descripcion,
-			   '' AS documento,
-			   NULL AS archivo_blob,
-			   NULL AS consecutivo_documento,
-			   '' AS asignado,
-			   i.tDescAdscrip AS adscripcion,
-			   asu.d_v_asunto AS area_ayuda,
+				 h.pk_i_ticket,
+				 h.pk_i_anio,
+				 'CERRADO' AS tipo_evento,
+				 h.c_i_numemp AS actor,
+				 i.d_v_nombre AS nombre_actor,
+				 h.d_f_fechcierre AS fecha_evento,
+				 '' AS descripcion,
+				 '' AS documento,
+				 NULL AS archivo_blob,
+				 NULL AS consecutivo_documento,
+				 '' AS asignado,
+				 iads.d_v_adscrip AS adscripcion,
+				 '' AS area_ayuda,
 				 NULL AS pk_i_asunto
 			FROM m_ticket h
-			LEFT JOIN v_personal i
-			    ON h.c_n_usucap = i.nIdNumEmp
-			LEFT JOIN c_asunto asu
-			    ON h.pk_i_asunto = asu.pk_i_asunto
+			LEFT JOIN c_usuario i
+					ON h.c_n_usucierre = i.c_i_usuario
+			LEFT JOIN c_adscrip iads
+					ON iads.c_i_adscrip = i.c_i_adscri
 			WHERE h.pk_i_ticket = :pk_i_ticket AND h.pk_i_anio = :pk_i_anio AND h.d_f_fechcierre IS NOT NULL
-
 			ORDER BY fecha_evento ASC;
 
 

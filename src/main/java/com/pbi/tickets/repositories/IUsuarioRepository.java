@@ -28,9 +28,15 @@ public interface IUsuarioRepository extends JpaRepository<CUsuario, Integer> {
 			+ "WHERE a.tAdsc BETWEEN 13400 AND 13423 AND b.c_i_usuario IS NULL ORDER BY 2;", nativeQuery = true)
 	List<UsuarioDTO> findPersonal();
 
-	@Query(value = "SELECT a.nIdNumEmp, " + "a.tNombre, " + "a.tAdsc "
-			+ "FROM v_personal a LEFT JOIN c_usuario b ON a.nIdNumEmp = b.c_i_usuario "
-			+ "WHERE a.tAdsc BETWEEN 13400 AND 13423 ORDER BY 2;", nativeQuery = true)
+	@Query(value = """
+			SELECT 
+				a.c_i_usuario AS nIdNumEmp, 
+				a.d_v_nombre AS tNombre, 
+				b.d_v_adscrip AS tAdsc 
+			FROM c_usuario a
+			INNER JOIN c_adscrip b ON a.c_i_adscri = b.c_i_adscrip
+			ORDER BY 2;
+			""", nativeQuery = true)
 	List<UsuarioDTO> findPersonalDTI();
 
 	@Query(value = """

@@ -167,11 +167,13 @@ public class ServiceTicketImp implements ITicketService {
 		ticket.setPk_i_estado(pk_i_estado);
 		if (pk_i_estado != 2) {
 			ticket.setD_f_fechcierre(null);
+			ticket.setC_n_usucierre(null);
 		} else {
 			ticket.setD_f_fechcierre(new Date());
 		}
-		ticket.setC_n_usucap(c_n_usucap);
+		ticket.setC_n_usucierre(c_n_usucap);
 		repoTickets.save(ticket);
+		
 
 	}
 
@@ -274,7 +276,7 @@ public class ServiceTicketImp implements ITicketService {
 	@Override
 	public TicketDTO obtenerTicketPorId(Integer pk_i_ticket, Integer pk_i_anio) {
 		TicketDTO ticket = repoTickets.findTicketById(pk_i_ticket, pk_i_anio);
-		ticket.setPk_i_asunto(repoTickets.findTipoAsunto(pk_i_ticket, pk_i_anio));
+		//ticket.setPk_i_asunto(repoTickets.findTipoAsunto(pk_i_ticket, pk_i_anio));
 		return ticket;
 	}
 
