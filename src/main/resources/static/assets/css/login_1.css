@@ -1,0 +1,77 @@
+@charset "utf-8";
+/* CSS Document */
+
+  body{
+    background: #030567;
+  }
+
+  .profile-img {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 10px;
+    display: block;
+    /*-moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;*/
+  }
+
+  .flip-container {
+    perspective: 1000;
+    border-radius: 50%;
+    margin: 0 auto 10px auto;
+    transform: rotateY(360deg);
+  }
+
+  .logged-in {
+    transform: rotateY(180deg);
+  }
+
+  .logged-in2 {
+    transform: rotateY(360deg);
+  }
+
+  .flip-container, .front, .back, .back-logo {
+    width: 130px;
+    height: 130px;
+  }
+
+  .flipper {
+    transition-duration: 0.6s;
+    transform-style: preserve-3d;
+  }
+
+  .front, .back {
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-size: cover;
+  }
+
+  .search-class {
+    border: none;
+    background: #fff;
+  }
+
+  .icon-search {
+    border: 1px solid #f2f2f2;
+    border-top-left-radius: .25em;
+    border-bottom-left-radius: .25em;
+    border-right: none;
+    padding-right: 0;
+  }
+
+  .input-search {
+    border: 1px solid #f2f2f2;
+    border-top-right-radius: .25em;
+    border-bottom-right-radius: .25em;
+    border-left: none;
+  }
+
+  .input-search:focus {
+    border-color: #f2f2f2;
+  }
+
+  .search-class-width {
+    max-width: 400px;
+  }

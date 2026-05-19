@@ -1,0 +1,382 @@
+<div th:replace="fragmentos/top::top"></div>
+<!-- page content -->
+<div class="right_col" role="main" style="padding-bottom: 100px;">
+	<section class="content">
+		<div class="container-fluid">
+			<div class="card">
+				<div class="card-header">
+
+					<h3>Administración de usuarios</h3>
+					<p>En este apartado puedes gestionar usuarios</p>
+
+					<a href="javascript:void(0)" class="btn btn-success btn-lg active" role="button" aria-pressed="true"
+						onclick="javascript:nuevo();">Nuevo</a>
+				</div>
+				<!--
+				<div th:if="${mensaje != null}" class="alert alert-success" role="alert" th:text="${mensaje}"></div>
+				-->
+				<div class="card-body">
+					<table id="table1" name="table1" class="table table-hover">
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">Usuario</th>
+								<th scope="col">Nombre</th>
+								<th scope="col">Perfil</th>
+								<th scope="col">Acciones</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="usuario : ${usuarios}">
+								<td th:text="${usuario.c_i_usuario}"></td>
+								<td th:text="${usuario.d_v_nombre}"></td>
+								<td th:text="${usuario.perfil.d_v_perfil}"></td>
+
+								<td>
+									<a href="javascript:void(0)"
+										th:onclick="'editar(\'' + ${usuario.c_i_usuario} + '\')'"
+										class="btn btn-warning btn-sm" title="Edita registro">
+										<i class="fa fa-edit" aria-hidden="true"></i>
+									</a>
+
+									<a href="javascript:void(0)"
+										th:onclick="'permisos(\'' + ${usuario.c_i_usuario} + '\')'"
+										class="btn btn-info btn-sm" title="Asignar permisos">
+										<i class="fa fa-key" aria-hidden="true"></i>
+									</a>
+
+									<a href="javascript:void(0)"
+										th:onclick="'eliminar(\'' + ${usuario.c_i_usuario} + '\')'"
+										class="btn btn-danger btn-sm" title="Elimina registro">
+										<i class="fa fa-trash" aria-hidden="true"></i>
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+
+		</div>
+	</section>
+	<br>
+
+	<div class="modal fade" id="modal_users" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+		aria-hidden="true">
+		<form id="form1" th:action="@{/usuarios/guardar}" method="post" th:object="${usuarioDTO}">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title font-weight-bold" id="modalTitle"></h5>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="person" id="lblPers" class="col-form-label">Personal:</label>
+							<select id="nombres" th:field="*{c_i_usuario}" class="form-control" required>
+								<option th:each="per : ${personal}" th:value="${per.c_i_usuario}"
+									th:text="${per.d_v_nombre}"></option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="person" class="col-form-label">Contraseña:</label>
+							<input id="pass" th:field="*{d_v_password}" type="password" class="form-control"
+								maxlength="30" />
+							<button type="button" class="btn btn-info btn-block" onclick="generarPass()"
+								style="margin-top: 8px;">Generar</button>
+							<p id="textPass" class="text text-center"></p>
+						</div>
+
+						<div class="form-group">
+							<label for="perfil" class="col-form-label">Perfil:</label>
+							<select id="perf" th:field="*{perfil.pk_i_perfil}" class="form-control" required>
+								<option th:each="pf : ${perfiles}" th:value="${pf.pk_i_perfil}"
+									th:text="${pf.d_v_perfil}" th:selected="${pf.pk_i_perfil == 2}"></option>
+							</select>
+						</div>
+
+					</div>
+					<br><br>
+					<div class="modal-footer">
+						<input type="hidden" id="idusuario" name="idusuario">
+						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+						<button type="submit" class="btn btn-primary">Enviar</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<br>
+	<div class="clearfix"></div>
+
+</div>
+</div>
+<footer th:replace="fragmentos/footer :: pie-pagina"></footer>
+</div>
+<div th:replace="fragmentos/scripts :: librerias-js"></div>
+<script>
+	/**/
+	var modoPermisos = false;
+	$(function () {
+		$('#table1').DataTable({
+			"pageLength": 10
+		});
+
+		$('#form1').submit(function (e) {
+			if (modoPermisos) return;
+			e.preventDefault();
+
+			$.ajax({
+				type: $(this).attr('method'),
+				url: $(this).attr('action'),
+				data: $(this).serialize(),
+				success: function () {
+					messageSuc("El registro ha sido guardado con éxito!!!");
+
+					setTimeout(function () {
+						$('#modal_users').modal('hide');
+						location.reload();
+					}, 1500);
+				},
+				error: function (xhr) {
+					messageErr("Error: " + xhr.responseText);
+				}
+			});
+		});
+
+
+		// Evento al seleccionar un área del select
+		$(document).on('change', '#selectDisponibles', function () {
+			const adscripId = $(this).val();
+			const usuarioId = $('#idusuario').val();
+			const nombre = $(this).find('option:selected').data('nombre');
+			const csrfToken = $("input[name='_csrf']").val();
+
+			if (!adscripId) return;
+
+			$.ajax({
+				url: '/tickets/usuarios/asignarArea',
+				type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify({c_i_usuario: usuarioId, c_i_adscrip: adscripId}),
+				headers: {'X-CSRF-TOKEN': csrfToken},
+				success: function () {
+					messageSuc("Área asignada correctamente");
+
+					// Agregar a tabla de asignadas
+					$('#tablaAsignadas').append(`
+		                <tr>
+		                    <td>${adscripId}</td>
+		                    <td>${nombre}</td>
+		                    <td>
+		                        <button type="button" class="btn btn-sm btn-danger btn-quitar" data-adscrip="${adscripId}">
+		                            Quitar
+		                        </button>
+		                    </td>
+		                </tr>
+		            `);
+
+					// Remover del select
+					$(`#selectDisponibles option[value="${adscripId}"]`).remove();
+					$('#selectDisponibles').val('');
+				},
+				error: function (xhr) {
+					messageErr("Error al asignar el área: " + xhr.responseText);
+				}
+			});
+		});
+
+		$(document).on('click', '.btn-quitar', function () {
+			const adscripId = $(this).data('adscrip');
+			const usuarioId = $('#idusuario').val();
+			const csrfToken = $("input[name='_csrf']").val();
+			const fila = $(this).closest('tr');
+
+			$.ajax({
+				url: '/tickets/usuarios/quitarArea',
+				type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify({
+					c_i_usuario: usuarioId,
+					c_i_adscrip: adscripId
+				}),
+				headers: {
+					'X-CSRF-TOKEN': csrfToken
+				},
+				success: function () {
+					messageSuc("Área eliminada correctamente");
+					fila.remove();
+					$('#selectDisponibles').append(`
+		                <option value="${adscripId}" data-nombre="${fila.find('td:nth-child(2)').text()}">
+		                    ${fila.find('td:nth-child(2)').text()}
+		                </option>
+		            `);
+				},
+				error: function (xhr) {
+					messageErr("Error al eliminar el área: " + xhr.responseText);
+				}
+			});
+		});
+
+
+
+	});
+
+	// Funciones CRUD
+	var modalOriginal = $('#modal_users .modal-body').html();
+
+	function nuevo() {
+		$('#modal_users button[type="submit"]').show();
+		modoPermisos = false;
+
+		$('#modal_users .modal-body').html(modalOriginal);
+
+		$('#form1')[0].reset();
+		$('.form-group').removeClass('has-error');
+		$('.help-block').empty();
+		$("#form1 input[name=idusuario]").val('');
+		$('.modal-title').text('Agregar al Catálogo');
+
+		$('#modal_users').modal('show');
+	}
+
+	function editar(idusuario) {
+		$('#modal_users button[type="submit"]').show();
+		modoPermisos = false;
+
+		$('#modal_users .modal-body').html(modalOriginal);
+		$('.modal-title').text('Editar al Catálogo');
+
+		$.get("/tickets/usuarios/buscar/" + idusuario, function (data) {
+			// Si el usuario no está en el select, lo agregamos dinámicamente
+			if ($("#nombres option[value='" + data.c_i_usuario + "']").length === 0) {
+				$('#nombres').append(
+					$('<option>', {
+						value: data.c_i_usuario,
+						text: data.d_v_nombre,
+						class: 'dinamico'
+					})
+				);
+			}
+
+			$('#nombres').val(data.c_i_usuario);
+			$('#perf').val(data.perfil.pk_i_perfil);
+			$('#pass').val('');
+			$('#idusuario').val(data.c_i_usuario);
+
+			$('#modal_users').modal('show');
+		});
+	}
+
+	function eliminar(idusuario) {
+		modoPermisos = false;
+		Swal.fire({
+			title: "¿Está segur@ de eliminar?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonText: "SI",
+			cancelButtonText: "NO"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				window.location.href = '/tickets/usuarios/eliminar/' + idusuario;
+			}
+		});
+	}
+
+	function generarPass() {
+		$('#pass').val('');
+		var contra_generada = document.getElementById('pass').value = autoCrear(8);
+		$('#textPass').text("La contraseña generada es: " + contra_generada);
+	}
+
+	function autoCrear(length) {
+		var chars = "abcdefghijklmnopqrstubwsyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+		//var chars = "1234567890";
+		var password = '';
+		for (i = 0; i < length; i++) {
+			password += chars.charAt(Math.floor(Math.random() * chars.length));
+		}
+
+		return password;
+	}
+
+	function permisos(usuario_id) {
+		modoPermisos = true;
+		$('#modal_users button[type="submit"]').hide();
+		$('#idusuario').val(usuario_id);
+
+		$('#form1')[0].reset();
+		$('.help-block').empty();
+		$('#nombres').closest('.form-group').hide();
+		$('#nombres').prop('disabled', true);
+
+		$('#pass').closest('.form-group').hide();
+		$('#perf').closest('.form-group').hide();
+		$('.modal-body .tabla-permisos').remove();
+
+		// Nuevo layout con select
+		var tablas = `
+	        <div class="tabla-permisos mt-3">
+	            <label>Áreas disponibles:</label>
+	            <select id="selectDisponibles" class="form-control mb-3">
+	                <option value="">-- Seleccione un área --</option>
+	            </select>
+
+	            <label>Áreas asignadas:</label>
+	            <table class="table table-bordered">
+	                <thead>
+	                    <tr>
+	                        <th>Adscripción</th>
+	                        <th>Descripción</th>
+	                        <th>Acción</th>
+	                    </tr>
+	                </thead>
+	                <tbody id="tablaAsignadas"></tbody>
+	            </table>
+	        </div>`;
+		$('.modal-body').append(tablas);
+
+		$.get(`/tickets/usuarios/areasDisponibles/${usuario_id}`, function (areas) {
+			const select = $('#selectDisponibles');
+			select.empty();
+			select.append(`<option value="">-- Seleccione un área --</option>`);
+
+			if (areas.length === 0) {
+				select.append(`<option value="" disabled>No hay áreas disponibles</option>`);
+			} else {
+				areas.forEach(a => {
+					select.append(`<option value="${a.c_i_adscrip}" data-nombre="${a.d_v_nombre}">${a.d_v_nombre}</option>`);
+				});
+			}
+		});
+
+		$.get(`/tickets/usuarios/areasAsignadas/${usuario_id}`, function (asignadas) {
+			let filas = '';
+			asignadas.forEach(a => {
+				filas += `
+	                <tr>
+	                    <td>${a.c_i_adscrip}</td>
+	                    <td>${a.d_v_nombre}</td>
+	                    <td>
+	                        <button type="button" class="btn btn-sm btn-danger btn-quitar" data-adscrip="${a.c_i_adscrip}">
+	                            Quitar
+	                        </button>
+	                    </td>
+	                </tr>`;
+			});
+			$('#tablaAsignadas').html(filas);
+		});
+
+		$('.modal-title').text('Áreas que el usuario puede visualizar');
+		$('#modal_users').modal('show');
+	}
+
+
+
+
+
+</script>
+</body>
+
+</html>

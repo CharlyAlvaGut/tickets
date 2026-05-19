@@ -1,0 +1,414 @@
+<div th:replace="fragmentos/top::top"></div>
+<!-- page content -->
+<div class="right_col" role="main" style="padding-bottom: 100px;">
+	<section class="content">
+		<div class="container-fluid">
+			<div class="card">
+				<div class="card-header d-flex justify-content-between align-items-center">
+					<div class="container">
+						<h3>Ticket N°
+							<span th:text="${cabecera.pk_i_ticket}">
+								ID
+							</span>
+							<span th:text="| Año ${cabecera.pk_i_anio}|">
+								ANIO
+							</span>
+						</h3>
+					</div>
+					<!--
+					<a th:href="@{/ordenes/reporte/{pk_i_ticket}/{pk_i_anio}(pk_i_ticket=${cabecera.pk_i_ticket}, pk_i_anio=${cabecera.pk_i_anio})}"
+						class="btn btn-success btn-lg" title="Imprimir Ticket" target="_blank">
+						<i class="fa fa-print" aria-hidden="true"></i>
+					</a>
+					-->
+					<a href="#" class="btn btn-success btn-lg imprimir-ticket" title="Imprimir Ticket" target="_blank"
+						th:data-url="@{/ordenes/reporte/{pk_i_ticket}/{pk_i_anio}(pk_i_ticket=${cabecera.pk_i_ticket}, pk_i_anio=${cabecera.pk_i_anio})}">
+						<i class="fa fa-print" aria-hidden="true"></i>
+					</a>
+					<a sec:authorize="hasAnyAuthority('PANEL', 'ADMIN')"
+						th:href="@{/ordenes/editar/{anio}/{ticketId}(anio=${cabecera.pk_i_anio}, ticketId=${cabecera.pk_i_ticket})}"
+						class="btn btn-warning btn-lg" title="Editar Ticket">
+						<i class="fa fa-edit" aria-hidden="true"></i>
+					</a>
+
+				</div>
+				<div class="card-body">
+					<h5 class="mb-3">Información del Ticket</h5>
+					<div class="row">
+						<!-- Columna izquierda -->
+						<div class="col-md-6" style="background-color:#F4FAFF;">
+							<table class="table table-borderless">
+								<tr>
+									<th class="text-end h6">Estado:</th>
+									<td>
+										<div class="form-group row">
+											<div class="col-sm-10">
+												<input type="text" th:value="${cabecera.d_v_estado}"
+													class="form-control form-control-sm" readonly>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="text-end h6">Fuente del Ticket:</th>
+									<td>
+										<div class="form-group row">
+											<div class="col-sm-10">
+												<input type="text" th:value="${cabecera.fuente}"
+													class="form-control form-control-sm" readonly>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="text-end h6">Vigencia del Ticket:</th>
+									<td>
+										<div class="form-group row">
+											<div class="col-sm-10">
+												<input type="text" th:value="${cabecera.horas} + ' ' + horas"
+													class="form-control form-control-sm" readonly>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="text-end h6">Fecha de Creación:</th>
+									<td>
+										<div class="form-group row">
+											<div class="col-sm-10">
+												<input type="text"
+													th:value="${#dates.format(cabecera.fecha_creacion, 'dd/MM/yyyy')}"
+													class="form-control form-control-sm" readonly>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="text-end h6">Nombre de creador:</th>
+									<td>
+										<div class="form-group row">
+											<div class="col-sm-10">
+												<input type="text" th:value="${cabecera.captura}"
+													class="form-control form-control-sm" readonly>
+											</div>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<!-- Columna derecha -->
+						<div class="col-md-6" style="background-color:#F4FAFF;">
+							<table class="table table-borderless">
+								<tr>
+									<th class="text-end h6">Área solicitante:</th>
+									<td>
+										<div class="form-group row">
+											<div class="col-sm-10">
+												<input type="text" th:value="${cabecera.adscrip_sol}"
+													class="form-control form-control-sm" readonly>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="text-end h6">Nombre Solicitante:</th>
+									<td>
+										<div class="form-group row">
+											<div class="col-sm-10">
+												<input type="text" th:value="${cabecera.solicitante}"
+													class="form-control form-control-sm" readonly>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="text-end h6">Área asignado:</th>
+									<td>
+										<div class="form-group row">
+											<div class="col-sm-10">
+												<input type="text" th:value="${cabecera.adscrip_asigna}"
+													class="form-control form-control-sm" readonly>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="text-end h6">Nombre asignado:</th>
+									<td>
+										<div class="form-group row">
+											<div class="col-sm-10">
+												<input type="text" th:value="${cabecera.asignado}"
+													class="form-control form-control-sm" readonly>
+											</div>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div th:each="h : ${hilo}" class="card mb-2">
+					<div th:if="${h.tipo_evento == 'CREACION'}"
+						class="d-flex align-items-center justify-content-center my-2">
+						<hr class="flex-grow-1 mx-3" style="border-top: 2px solid#C3D9FF ;">
+						<span class="text-primary fw-semibold" th:text="${h.area_ayuda}">Área de ayuda</span>
+						<hr class="flex-grow-1 mx-3" style="border-top: 2px solid#C3D9FF ;">
+					</div>
+
+					<div class="card-header d-flex justify-content-between align-items-center" th:style="${h.tipo_evento == 'RESPUESTA'} ? 'background-color:#FFE0B3;' :
+						          (${h.tipo_evento == 'TURNADO'} ? 'background-color:#FFFFEE;' :
+						          (${h.tipo_evento == 'NOTA INTERNA'} ? 'background-color:#FFFFEE;' :
+						          (${h.tipo_evento == 'CREACION'} ? 'background-color:#C3D9FF ;;' :
+						          (${h.tipo_evento == 'CERRADO'} ? 'background-color:#FFFFEE;' : 'background-color:##FFE0B3;'))))">
+
+						<h6 class="m-0 text-dark" th:switch="${h.tipo_evento}">
+							<span th:case="'TURNADO'"><span th:text="${h.nombre_actor}"></span> asignó ticket a <span
+									th:text="${h.asignado}"></span> </span>
+							<span th:case="'CREACION'">Asunto del ticket</span>
+							<span th:case="'CERRADO'">Ticket Cerrado</span>
+							<span th:case="*">
+								<span th:text="${h.nombre_actor}"></span>
+							</span>
+						</h6>
+
+						<h6 class="m-0 text-dark" th:text="${#dates.format(h.fecha_evento, 'dd/MM/yyyy HH:mm')}"></h6>
+					</div>
+
+					<div class="card-body">
+						<p class="text-dark" th:if="${h.tipo_evento == 'CERRADO'}"
+							th:text="'Ticket Cerrado por ' + ${h.nombre_actor}"></p>
+
+						<p class="text-dark" th:unless="${h.tipo_evento == 'CERRADO'}" th:text="${h.descripcion}"
+							style="white-space: pre-line;"></p>
+					</div>
+
+					<div class="card-footer" th:if="${h.archivo_blob != null && !#strings.isEmpty(h.archivo_blob)}">
+						<a th:href="@{/ordenes/{id}/{anio}/{consec}/documento(id=${h.pk_i_ticket}, anio=${h.pk_i_anio}, consec=${h.consecutivo_documento})}"
+							target="_blank" th:text="${h.documento}">
+							Ver archivo adjunto
+						</a>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-header">
+						<ul class="nav nav-pills card-header-pills " id="navTabs" role="tablist">
+							<li class="nav-item ">
+								<a class="nav-link active" id="respuesta-tab" data-toggle="tab" href="#respuesta"
+									role="tab" aria-controls="respuesta" aria-selected="true">Respuesta</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="reasignar-tab" data-toggle="tab" href="#reasignar" role="tab"
+									aria-controls="reasignar" aria-selected="false">Reasignar</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="reasignar-tab" data-toggle="tab" href="#nota" role="tab"
+									aria-controls="nota" aria-selected="false">Nota Interna</a>
+							</li>
+							<!--
+							<li class="nav-item">
+								<a class="nav-link" id="reasignar-tab" data-toggle="tab" href="#fusion" role="tab"
+									aria-controls="fusion" aria-selected="false">Fusionar</a>
+							</li>
+							-->
+							<li class="nav-item">
+								<a class="nav-link" id="cerrar-tab" data-toggle="tab" href="#cerrar" role="tab"
+									aria-controls="cerrar" aria-selected="false"
+									th:text="${cabecera.d_v_estado == 'CERRADO'} ? 'Reabrir' : Cerrar"></a>
+							</li>
+						</ul>
+					</div>
+
+					<div class="card-body">
+						<div class="tab-content" id="myTabContent">
+							<div class="tab-pane fade show active" id="respuesta" role="tabpanel"
+								aria-labelledby="respuesta-tab">
+								<h5 class="card-title">Responder</h5>
+								<form th:action="@{/ordenes/respuesta}" method="post" th:object="${detalleDTO}"
+									enctype="multipart/form-data">
+									<div class="form-group">
+										<label for="lblResp">Respuesta</label>
+										<textarea th:field="*{d_v_comentario}" class="form-control" id="d_v_respuesta"
+											rows="3" required></textarea>
+										<input th:field="*{d_v_nomdocto}" type="hidden" id="d_v_nomdocto">
+										<input name="pk_i_ticket" th:value="${cabecera.pk_i_ticket}" type="hidden">
+										<input name="pk_i_anio" th:value="${cabecera.pk_i_anio}" type="hidden">
+
+									</div>
+									<div class="form-group">
+										<label for="adjuntos">Adjuntos</label>
+										<input th:field="*{d_b_respuesta_form}" type="file" class="form-control"
+											accept="application/pdf, image/png, image/jpeg" id="adjuntos">
+									</div>
+									<button type="submit" class="btn btn-primary">Responder</button>
+								</form>
+							</div>
+							<div class="tab-pane fade" id="reasignar" role="tabpanel" aria-labelledby="reasignar-tab">
+								<h5 class="card-title">Reasignar</h5>
+								<form th:action="@{/ordenes/turnado}" method="post" th:object="${detalleDTO}">
+									<div class="form-group">
+										<label for="lblPersonal">Personal</label>
+										<select th:field="*{c_i_numemp}" class="custom-select" id="cmbPersonal">
+											<option th:value="${null}" selected>Seleccione un elemento</option>
+											<option th:each="per : ${personal}" th:value="${per.c_i_usuario}"
+												th:text="${per.d_v_nombre}" th:attr="data-ads=${per.c_i_adscrip}">
+											</option>
+										</select>
+										<input th:field="*{c_i_adscrip}" id="c_i_adscrip" type="hidden">
+									</div>
+									<div class="form-group">
+										<label for="lblResp">Motivos de reasignación</label>
+										<textarea th:field="*{d_v_comentario}" class="form-control" id="d_v_reasigna"
+											rows="3" required></textarea>
+									</div>
+									<input name="pk_i_ticket" th:value="${cabecera.pk_i_ticket}" type="hidden">
+									<input name="pk_i_anio" th:value="${cabecera.pk_i_anio}" type="hidden">
+									<button type="submit" class="btn btn-primary">Reasignar</button>
+								</form>
+							</div>
+							<div class="tab-pane fade" id="nota" role="tabpanel" aria-labelledby="reasignar-tab">
+								<h5 class="card-title">Nota Interna</h5>
+								<form th:action="@{/ordenes/nota}" method="post" th:object="${detalleDTO}">
+
+									<div class="form-group">
+										<label for="lblResp">Nota</label>
+										<textarea th:field="*{d_v_comentario}" class="form-control" id="d_v_nota"
+											rows="3" required></textarea>
+										<input name="pk_i_ticket" th:value="${cabecera.pk_i_ticket}" type="hidden">
+										<input name="pk_i_anio" th:value="${cabecera.pk_i_anio}" type="hidden">
+									</div>
+									<button type="submit" class="btn btn-primary">Comentar</button>
+								</form>
+							</div>
+							<div class="tab-pane fade" id="fusion" role="tabpanel" aria-labelledby="reasignar-tab">
+								<h5 class="card-title">Fusionar Ticket</h5>
+								<button class="btn">
+									<img th:src="@{/assets/img/gotenks.jpg}" width="90px">
+									1 ... 2 ... 3 ... ¡FUSIÓN!
+								</button>
+							</div>
+							<div class="tab-pane fade" id="cerrar" role="tabpanel" aria-labelledby="cerrar-tab">
+								<button type="button"
+									th:onclick="|cambiar_estado(${cabecera.pk_i_ticket}, ${cabecera.pk_i_anio}, ${cabecera.pk_i_estado})|"
+									th:class="'btn btn-lg btn-block ' + (${cabecera.pk_i_estado == 2} ? 'btn-success' : 'btn-danger')"
+									th:text="${cabecera.pk_i_estado == 2} ? 'Reabrir' : 'Cerrar'">
+								</button>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<div class="clearfix"></div>
+
+</div>
+<footer th:replace="fragmentos/footer :: pie-pagina"></footer>
+</div>
+<div th:replace="fragmentos/scripts :: librerias-js"></div>
+<script>
+	//Código JS
+	$(document).ready(function () {
+
+		$('#adjuntos').on('change', function () {
+			const maxFileSize = 1 * 1024 * 1024; // 1 MB
+			const file = this.files[0];
+
+			if (file && file.size > maxFileSize) {
+				messageErr("El archivo no puede pesar más de 1MB!");
+				$(this).val('');
+			}
+		});
+
+		$("#cmbPersonal").on("change", function () {
+			let ads = $(this).find(":selected").data("ads");
+			$("#c_i_adscrip").val(ads);
+		});
+
+		$('#d_v_reasigna').val('Reasignar Ticket');
+
+
+		//Obtener el nombre del documento
+		$('#adjuntos').change(function () {
+			if (this.files.length > 0) {
+				var a = $('#d_v_nomdocto').val(this.files[0].name);
+				console.log(a.val());
+			}
+
+		});
+
+
+		$('.imprimir-ticket').on('click', function (e) {
+			e.preventDefault();
+			var url = $(this).data('url');
+
+			Swal.fire({
+				title: '¿Desea imprimir las notas internas?',
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonColor: '#28a745',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Sí, imprimir',
+				cancelButtonText: 'No'
+			}).then((result) => {
+				let imprimirVal = result.isConfirmed ? 1 : 0;
+				let separator = url.includes('?') ? '&' : '?';
+				let urlConParametro = url + separator + 'notas=' + imprimirVal;
+
+				window.open(urlConParametro, '_blank');
+			});
+		});
+
+
+	});
+
+	function cambiar_estado(pk_i_ticket, pk_i_anio, pk_i_estado) {
+
+		let titulo, mensaje, error;
+		if (pk_i_estado == 2) { // Esto pasa cuando el ticket está cerrado
+			pk_i_estado = 1;
+			titulo = "¿Está segur@ de reabrir el Ticket?";
+			mensaje = "Ticket reabierto";
+			error = "Error al reabrir el ticket! :(";
+
+		} else { //Esto pasa cuando el ticket está abierto
+			pk_i_estado = 2;
+			titulo = "¿Está segur@ de cerrar el Ticket?";
+			mensaje = "Ticket cerrado";
+			error = "Error al cerrar el ticket! :(";
+		}
+
+		Swal.fire({
+			title: titulo,
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonText: "SI",
+			cancelButtonText: "NO"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				$.get('/tickets/ordenes/cerrar/' + pk_i_estado + '/' + pk_i_ticket + '/' + pk_i_anio)
+					.done(function (response) {
+						Swal.fire({
+							title: mensaje,
+							icon: "success",
+							timer: 1500,
+							showConfirmButton: false
+						});
+						setTimeout(function () {
+							window.location.href = '/tickets/ordenes/mistickets';
+						}, 150);
+
+					})
+					.fail(function () {
+						Swal.fire({
+							title: error,
+							icon: "error"
+						});
+					});
+			}
+		});
+	}
+</script>
+</body>
+
+</html>

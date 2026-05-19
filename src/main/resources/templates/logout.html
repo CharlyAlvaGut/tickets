@@ -1,0 +1,79 @@
+
+
+<!doctype html>
+<html lang="es-ES">
+    <head>
+        <meta charset="utf-8">
+        <link rel="icon" href="imagenes/favicon.ico" type="image/x-icon">
+        <link href="css/estilos.css" rel="stylesheet" type="text/css">
+        <title>SIC - PBI</title>
+        <style type="text/css">
+            body{ 
+                margin:0; 
+                padding:0; 
+                background: #030567; /*#284E9A; #CC0E0E;*/
+                font-family: Arial, Helvetica, Verdana, sans-serif;
+            }
+
+            div #wrap{ 
+                margin:0 auto; 
+                width:865px; 
+                height:417px; 
+                position:absolute; 
+            }
+
+            #logo{
+                float: left;
+                background-repeat: no-repeat;
+                padding: 5px 40px 5px 5px;
+                /*border: 1px solid #fff;*/
+            }
+
+            div #errorBox{ 
+                /*background: url(imagenes/tarjeta_roja.jpg) no-repeat top left;*/ 
+                width:865px; height:354px; margin:auto; 
+                padding:50px 0 0 100px;
+                color:#fff;
+                /*border: 1px solid #000;*/
+                
+                padding-top: 10%;
+            }
+
+            div #errorText p{ 
+                width:555px; 
+                font-size:14px; 
+                line-height:26px; 
+            }		
+
+            a {
+                color: #FF0000; 
+                font-weight: bold; 
+                font-size: 14px; 
+                text-decoration: none; 
+            }
+
+            a:hover { 
+                color: #FFF;
+                font-size: 16px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="wrap">
+            <div id="errorBox">
+                <div id="logo">
+                    <img src="http://172.30.1.212:8089/productos/assets/img/logout.png" width="200" height="220">
+                </div>
+                <h3>Salir del Sistema</h3> <p> MSG: CERRANDO SESI&Oacute;N </p>
+                <p>
+                    <b>Sesi&oacute;n Terminada !!!</b>
+                    <br>
+                    <br>Redireccionando al inicio ...
+                </p>
+            <script> setTimeout("parent.location = '/login'", 3000); </script>            </div>
+        </div>
+    </body>
+
+</html>
+

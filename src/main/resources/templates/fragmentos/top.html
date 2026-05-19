@@ -1,0 +1,25 @@
+<th:block th:fragment="top">
+	<!DOCTYPE html>
+	<html xmlns:th="http://www.thymeleaf.org">
+
+	<head th:replace="fragmentos/head::cabecera"></head>
+
+	<body class="nav-md">
+		<div class="container body">
+			<div class="main_container">
+				<header>
+					<div class="panel panel-default" style="background: #fff;">
+						<!--
+						<div class="panel-heading container">
+							<div class="d-none d-sm-block text-center">
+								<a class="navbar-brand" href="http://www.policiabancaria.cdmx.gob.mx/">
+									<img th:src="@{/assets/img/topbanner.png}" alt="">
+								</a>
+							</div>
+						</div>
+						-->
+						
+					</div>
+				</header>
+				<div th:replace="fragmentos/nav :: menu-navegacion"></div>
+</th:block>

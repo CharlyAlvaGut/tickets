@@ -8,24 +8,24 @@
 
 ---
 
-## 📋 Descripción
+## Descripción
 Sistema web desarrollado para el **Instituto Politécnico Nacional** que permite levantar, 
 asignar y dar seguimiento a órdenes de servicio (tickets) de manera eficiente y centralizada.
 
 ---
 
-## ✨ Funcionalidades
-- 🔐 Autenticación por correo institucional
-- 🎫 Creación y seguimiento de tickets
-- 📁 Adjuntar documentos a las órdenes
-- 👥 Asignación de tickets por área y usuario
-- 📊 Reportes y consultas
-- 📧 Notificaciones por correo electrónico
-- 🔒 Control de acceso por roles (Admin, Staff, Usuario)
+## Funcionalidades
+- Autenticación por correo institucional
+- Creación y seguimiento de tickets
+- Adjuntar documentos a las órdenes
+- Asignación de tickets por área y usuario
+- Reportes y consultas
+- Notificaciones por correo electrónico
+- Control de acceso por roles (Admin, Staff, Usuario)
 
 ---
 
-## 🛠️ Tecnologías
+## Tecnologías
 | Capa | Tecnología |
 |------|-----------|
 | Backend | Java 17 + Spring Boot |
@@ -36,7 +36,7 @@ asignar y dar seguimiento a órdenes de servicio (tickets) de manera eficiente y
 
 ---
 
-## 🚀 Instalación
+## Instalación
 
 ### Requisitos previos
 - Java 17+
@@ -61,10 +61,10 @@ asignar y dar seguimiento a órdenes de servicio (tickets) de manera eficiente y
 
 ---
 
-## 👤 Autor
+## Autor
 Desarrollado por **José Carlos Alvarado Gutiérrez** — Estudiante del Instituto Politécnico Nacional  
 Escuela Superior de Cómputo (ESCOM)
 
 ---
 
-> 🏫 Instituto Politécnico Nacional · Portal de Servicios IPN
+> Instituto Politécnico Nacional · Portal de Servicios IPN
