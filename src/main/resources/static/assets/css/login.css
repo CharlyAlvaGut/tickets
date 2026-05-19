@@ -1,7 +1,8 @@
 @charset "utf-8";
 
 body {
-  background: #6B1228;
+  /*background: #6B1228;*/
+  background: white;
 }
 
 .card-login {
