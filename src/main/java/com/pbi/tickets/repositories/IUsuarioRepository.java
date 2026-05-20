@@ -30,9 +30,9 @@ public interface IUsuarioRepository extends JpaRepository<CUsuario, Integer> {
 
 	@Query(value = """
 			SELECT 
-				a.c_i_usuario AS nIdNumEmp, 
-				a.d_v_nombre AS tNombre, 
-				b.d_v_adscrip AS tAdsc 
+				a.c_i_usuario, 
+				a.d_v_nombre, 
+				a.c_i_adscri AS c_i_adscrip
 			FROM c_usuario a
 			INNER JOIN c_adscrip b ON a.c_i_adscri = b.c_i_adscrip
 			ORDER BY 2;

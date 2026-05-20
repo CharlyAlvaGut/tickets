@@ -17,6 +17,15 @@ public class UsuarioDTO {
 	private Date d_f_fechcap = new Date();
 	private String w_v_status = "A";
 	private String d_v_email;
+	
+	
+
+	public UsuarioDTO(Integer c_i_usuario, String d_v_nombre, Integer c_i_adscrip) {
+		super();
+		this.c_i_usuario = c_i_usuario;
+		this.d_v_nombre = d_v_nombre;
+		this.c_i_adscrip = c_i_adscrip;
+	}
 
 	public UsuarioDTO(Integer c_i_usuario, String d_v_nombre, String d_v_password, CPerfil perfil) {
 		super();

@@ -2,7 +2,7 @@
 <!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="tickets" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="35bfa404-ed65-4f84-af59-7fb3985c2990">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Tickets (Produccion)"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
 	<parameter name="p_pk_i_ticket" class="java.lang.String">
 		<defaultValueExpression><![CDATA["5"]]></defaultValueExpression>
 	</parameter>
@@ -21,19 +21,20 @@
 	<parameter name="p_notas" class="java.lang.String">
 		<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="p_imagen_1" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT 
    a.pk_i_ticket,
    a.pk_i_anio,
    'CREACION' AS tipo_evento,
    a.c_i_numemp AS actor,
-   CONCAT(p_sol.tApePaterno,' ',p_sol.tApeMaterno, ' ', p_sol.tNombre) AS nombre_actor,
+   p_sol.d_v_nombre AS nombre_actor,
    a.d_f_fechcap AS fecha_evento,
    a.d_v_asunto AS descripcion,
    doc_asunto.d_v_nomdocto AS documento,
    '' AS asignado,
-   ad.tDescAdscripcion AS adscripcion,
-   CONCAT(ad.tDescAdscripcion, ' - ', asu.d_v_asunto) AS texto_adscripcion
+   ad.d_v_adscrip AS adscripcion,
+   CONCAT(ad.d_v_adscrip, ' - ', ad.d_v_siglas) AS texto_adscripcion
 FROM m_ticket a
 			LEFT JOIN (
 			    SELECT pk_i_ticket, pk_i_anio, d_v_nomdocto, d_b_documento, d_n_consec
@@ -42,11 +43,9 @@ FROM m_ticket a
 			      AND d_b_documento IS NOT NULL
 			) doc_asunto
 			    ON a.pk_i_ticket = doc_asunto.pk_i_ticket AND a.pk_i_anio = doc_asunto.pk_i_anio
-			LEFT JOIN db_pbi_polban.tblRHPersonal p_sol ON a.c_i_numemp = p_sol.nIdNumEmp
-			LEFT JOIN c_asunto asu
-			    ON a.pk_i_asunto = asu.pk_i_asunto
-			LEFT JOIN db_pbi_polban.tblRHAdscripcionesActual ad
-			 ON a.c_i_adscrip = ad.nIdAdscripcion
+			LEFT JOIN c_usuario p_sol ON a.c_i_numemp = p_sol.c_i_usuario
+			LEFT JOIN c_adscrip ad
+			 ON a.c_i_adscrip = ad.c_i_adscrip
 WHERE a.pk_i_ticket =  $P{p_pk_i_ticket}
   AND a.pk_i_anio =  $P{p_pk_i_anio}
 
@@ -58,20 +57,22 @@ SELECT
    d.pk_i_anio,
    UPPER(e.d_v_respuesta) AS tipo_evento, 
    d.c_n_usucap AS actor,
-   f.tNombre AS nombre_actor,
+   f.d_v_nombre AS nombre_actor,
    d.d_f_fechcap AS fecha_evento,
    d.d_v_comentario AS descripcion,
    doc_resp.d_v_nomdocto AS documento,
-   g.tNombre AS asignado,
-   f.tDescAdscrip AS adscripcion,
+   g.d_v_nombre AS asignado,
+   fads.d_v_adscrip AS adscripcion,
    '' AS texto_adscripcion
 FROM d_ticket d
 INNER JOIN c_respuesta e 
     ON d.pk_i_respuesta = e.pk_i_respuesta
-LEFT JOIN v_personal f 
-    ON d.c_n_usucap = f.nIdNumEmp
-LEFT JOIN v_personal g 
-    ON d.c_i_numemp = g.nIdNumEmp
+LEFT JOIN c_usuario f 
+    ON d.c_n_usucap = f.c_i_usuario
+LEFT JOIN c_adscrip fads 
+    ON fads.c_i_adscrip = f.c_i_adscri    
+LEFT JOIN c_usuario g 
+    ON d.c_i_numemp = g.c_i_usuario
 LEFT JOIN (
     SELECT pk_i_ticket, pk_i_anio, c_n_usucap, d_v_nomdocto, d_f_fechcap
     FROM d_documento
@@ -101,22 +102,24 @@ SELECT
    h.pk_i_anio,
    'CERRADO' AS tipo_evento,
    h.c_i_numemp AS actor,
-   i.tNombre AS nombre_actor,
+   i.d_v_nombre AS nombre_actor,
    h.d_f_fechcierre AS fecha_evento,
    '' AS descripcion,
    '' AS documento,
    '' AS asignado,
-   i.tDescAdscrip AS adscripcion,
+   iads.d_v_adscrip AS adscripcion,
    '' AS texto_adscripcion
 FROM m_ticket h
-LEFT JOIN v_personal i 
-    ON h.c_n_usucap = i.nIdNumEmp
+LEFT JOIN c_usuario i 
+    ON h.c_n_usucierre = i.c_i_usuario
+LEFT JOIN c_adscrip iads 
+    ON iads.c_i_adscrip = i.c_i_adscri
 WHERE 
     h.pk_i_ticket =  $P{p_pk_i_ticket}
     AND h.pk_i_anio = $P{p_pk_i_anio}
     AND h.d_f_fechcierre IS NOT NULL
 
-ORDER BY fecha_evento ASC]]>
+ORDER BY fecha_evento ASC;]]>
 	</queryString>
 	<field name="pk_i_ticket" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="pk_i_ticket"/>
@@ -187,14 +190,18 @@ ORDER BY fecha_evento ASC]]>
 					</graphicElement>
 				</line>
 				<textField>
-					<reportElement x="60" y="0" width="496" height="61" uuid="7f8dbbd4-3ec5-4a16-b352-04153377267c"/>
-					<textElement markup="styled">
+					<reportElement x="0" y="0" width="556" height="61" uuid="7f8dbbd4-3ec5-4a16-b352-04153377267c"/>
+					<textElement textAlignment="Center" markup="styled">
 						<font size="12" isBold="false"/>
 					</textElement>
-					<textFieldExpression><![CDATA["<style isBold='true'>POLICÍA BANCARIA E INDUSTRIAL</style>\n" +
-"<style size = '10'>JEFATURA DE DEPARTAMENTO DE SISTEMAS DE INFORMACIÓN</style>\n" +
-"<style isBold='true'>ORDEN DE SERVICIO</style>"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["<style isBold='true' isItalic='false' textAlignment='Center'>INSTITUTO POLITÉCNICO NACIONAL</style>\n" +
+"<style size='10' textAlignment='Center'>ESCUELA SUPERIOR DE CÓMPUTO</style>\n" +
+"<style isBold='true' textAlignment='Center'>ORDEN DE SERVICIO</style>"]]></textFieldExpression>
 				</textField>
+				<image>
+					<reportElement x="481" y="-1" width="50" height="61" uuid="5239f8b5-57ae-4249-8d98-fdc9f75de0de"/>
+					<imageExpression><![CDATA[$P{p_imagen_1}]]></imageExpression>
+				</image>
 			</frame>
 		</band>
 	</pageHeader>

@@ -77,6 +77,9 @@ public class jcTickets {
 
 	@Value("${reporte.imagen.path}")
 	private String rutaImagen;
+	
+	@Value("${reporte.imagen.path2}")
+	private String rutaImagen2;
 
 	@GetMapping("/crear")
 	public String crearTickets(Model model) {
@@ -92,8 +95,7 @@ public class jcTickets {
 		List<HiloDTO> hilo = serviceTickets.obtenerHilo(pk_i_ticket, pk_i_anio);
 		modelo.addAttribute("cabecera", cabecera);
 		modelo.addAttribute("hilo", hilo);
-		modelo.addAttribute("areas", serviceVigencia.obtenerAreas());
-		modelo.addAttribute("adscripciones", serviceVigencia.obtenerAdscripcionesArea());
+		modelo.addAttribute("personal", serviceUsuario.obtenerTodosDTI());
 		//*/
 		modelo.addAttribute("detalleDTO", new DetalleDTO());
 		return "tickets/detalle_tickets";
@@ -326,9 +328,10 @@ public class jcTickets {
 		parametros.put("p_pk_i_ticket", pk_i_ticket);
 		parametros.put("p_pk_i_anio", pk_i_anio);
 		parametros.put("p_imagen", rutaImagen);
+		parametros.put("p_imagen_1", rutaImagen2);
 		parametros.put("p_user", user.getD_v_nombre());
 		parametros.put("p_notas", notas);
-		parametros.put("p_normado", "F46-4/7"); // Código duro
+		//parametros.put("p_normado", "F46-4/7"); // Código duro
 
 		try (Connection connection = DataSourceUtils.getConnection(dataSource)) {
 			JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlStream);

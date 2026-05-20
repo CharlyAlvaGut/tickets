@@ -8,10 +8,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.ipn.mx</groupId>
-	<artifactId>tickets</artifactId>
+	<artifactId>tickets_ipn</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>tickets</name>
+	<name>tickets_ipn</name>
 	<description>Sistema para gestionar Órdenes de Servicio o también llamado Tickets</description>
 	<url/>
 	<licenses>

@@ -1,12 +1,13 @@
 <th:block th:fragment="menu-navegacion">
 	<div class="col-md-3 left_col">
 		<div class="left_col scroll-view">
-			<!--
+
 			<div class="navbar nav_title" style="border: 0;">
-				<a href="http://www.policiabancaria.cdmx.gob.mx/" alt="" class="site_title"><img
-						th:src="@{/assets/img/icons/favicon.ico}" alt=""> <span>PBI</span></a>
+				<a th:href="@{/}" class="site_title" style="font-size: 18px; font-weight: 600; letter-spacing: 1px;">
+					IPN - Tickets
+				</a>
 			</div>
-			-->
+
 			<div class="clearfix"></div>
 
 			<!-- menu profile quick info -->
@@ -16,11 +17,12 @@
 				</div>
 				<div class="profile_info">
 					<span>BIENVENIDO</span>
-					
+
 					<h2>
-						<span th:if="${session.usuario != null}"  sec:authorize="isAuthenticated()" class="text-light" th:text="${session.usuario.d_v_nombre}"></span>&nbsp;
+						<span th:if="${session.usuario != null}" sec:authorize="isAuthenticated()" class="text-light"
+							th:text="${session.usuario.d_v_nombre}"></span>&nbsp;
 					</h2>
-					
+
 				</div>
 			</div>
 			<!-- /menu profile quick info -->
