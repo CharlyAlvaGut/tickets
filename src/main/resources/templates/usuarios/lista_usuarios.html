@@ -71,15 +71,26 @@
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
 					</div>
 					<div class="modal-body">
+						<!-- ID -->
+						<input type="hidden" id="idUsuarioHidden" th:field="*{c_i_usuario}" />
+
+						<!-- Nombre -->
 						<div class="form-group">
-							<label for="person" id="lblPers" class="col-form-label">Personal:</label>
-							<select id="nombres" th:field="*{c_i_usuario}" class="form-control" required>
-								<option th:each="per : ${personal}" th:value="${per.c_i_usuario}"
-									th:text="${per.d_v_nombre}"></option>
-							</select>
+							<label class="col-form-label">Nombre completo:</label>
+							<input id="nombre" th:field="*{d_v_nombre}" type="text" class="form-control" maxlength="45"
+								required />
 						</div>
+
+						<!-- Email -->
 						<div class="form-group">
-							<label for="person" class="col-form-label">Contraseña:</label>
+							<label class="col-form-label">Correo electrónico:</label>
+							<input id="email" th:field="*{d_v_email}" type="email" class="form-control" maxlength="45"
+								required />
+						</div>
+
+						<!-- Contraseña -->
+						<div class="form-group">
+							<label class="col-form-label">Contraseña:</label>
 							<input id="pass" th:field="*{d_v_password}" type="password" class="form-control"
 								maxlength="30" />
 							<button type="button" class="btn btn-info btn-block" onclick="generarPass()"
@@ -87,14 +98,14 @@
 							<p id="textPass" class="text text-center"></p>
 						</div>
 
+						<!-- Perfil -->
 						<div class="form-group">
-							<label for="perfil" class="col-form-label">Perfil:</label>
+							<label class="col-form-label">Perfil:</label>
 							<select id="perf" th:field="*{perfil.pk_i_perfil}" class="form-control" required>
 								<option th:each="pf : ${perfiles}" th:value="${pf.pk_i_perfil}"
-									th:text="${pf.d_v_perfil}" th:selected="${pf.pk_i_perfil == 2}"></option>
+									th:text="${pf.d_v_perfil}"></option>
 							</select>
 						</div>
-
 					</div>
 					<br><br>
 					<div class="modal-footer">
@@ -229,42 +240,26 @@
 	function nuevo() {
 		$('#modal_users button[type="submit"]').show();
 		modoPermisos = false;
-
 		$('#modal_users .modal-body').html(modalOriginal);
-
 		$('#form1')[0].reset();
-		$('.form-group').removeClass('has-error');
-		$('.help-block').empty();
-		$("#form1 input[name=idusuario]").val('');
-		$('.modal-title').text('Agregar al Catálogo');
-
+		$('#idUsuarioHidden').val('');
+		$('.modal-title').text('Agregar usuario');
 		$('#modal_users').modal('show');
 	}
 
 	function editar(idusuario) {
 		$('#modal_users button[type="submit"]').show();
 		modoPermisos = false;
-
 		$('#modal_users .modal-body').html(modalOriginal);
-		$('.modal-title').text('Editar al Catálogo');
+		$('.modal-title').text('Editar usuario');
 
 		$.get("/tickets/usuarios/buscar/" + idusuario, function (data) {
-			// Si el usuario no está en el select, lo agregamos dinámicamente
-			if ($("#nombres option[value='" + data.c_i_usuario + "']").length === 0) {
-				$('#nombres').append(
-					$('<option>', {
-						value: data.c_i_usuario,
-						text: data.d_v_nombre,
-						class: 'dinamico'
-					})
-				);
-			}
-
-			$('#nombres').val(data.c_i_usuario);
+			$('#idUsuarioHidden').val(data.c_i_usuario);
+			$('#nombre').val(data.d_v_nombre);
+			$('#email').val(data.d_v_email);
 			$('#perf').val(data.perfil.pk_i_perfil);
 			$('#pass').val('');
 			$('#idusuario').val(data.c_i_usuario);
-
 			$('#modal_users').modal('show');
 		});
 	}
@@ -308,12 +303,14 @@
 
 		$('#form1')[0].reset();
 		$('.help-block').empty();
-		$('#nombres').closest('.form-group').hide();
-		$('#nombres').prop('disabled', true);
 
+		// Ocultar campos que no corresponden en modo permisos
+		$('#nombre').closest('.form-group').hide();
+		$('#email').closest('.form-group').hide();
 		$('#pass').closest('.form-group').hide();
 		$('#perf').closest('.form-group').hide();
 		$('.modal-body .tabla-permisos').remove();
+
 
 		// Nuevo layout con select
 		var tablas = `

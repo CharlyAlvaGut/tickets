@@ -3,6 +3,8 @@ package com.pbi.tickets.model;
 import java.util.Date;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -12,6 +14,7 @@ import jakarta.persistence.Table;
 @Table(name = "c_usuario")
 public class CUsuario {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer c_i_usuario;
 	private String d_v_email;
 	private String d_v_nombre;
@@ -19,16 +22,11 @@ public class CUsuario {
 	private Integer c_n_usucap;
 	private Date d_f_fechcap;
 	private String w_v_status;
-/**/
+	
 	@ManyToOne
 	@JoinColumn(name = "pk_i_perfil", nullable = false) // Llave foránea a pk_i_perfil y no puede ser nulo
 	private CPerfil perfil;
-//*/	
-/*
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "usuarioperfil", joinColumns = @JoinColumn(name = "c_i_usuario"), inverseJoinColumns = @JoinColumn(name = "pk_i_perfil"))
-	private Set<CPerfil> perfiles = new HashSet<>();
-//*/
+
 	public Integer getC_i_usuario() {
 		return c_i_usuario;
 	}

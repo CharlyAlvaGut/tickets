@@ -47,28 +47,28 @@ public class ServiceUsuarioImp implements IUsuarioService {
 
 	@Override
 	public void guardar(UsuarioDTO usuarioDTO) {
-		CUsuario usuario;
+	    CUsuario usuario;
 
-		Optional<CUsuario> existente = repoUsuarios.findById(usuarioDTO.getC_i_usuario());
-		if (existente.isPresent()) {
-			usuario = existente.get();
-		} else {
-			usuario = new CUsuario();
-			usuario.setC_i_usuario(usuarioDTO.getC_i_usuario());
-		}
+	    // Si tiene ID, es edición; si no, es nuevo
+	    if (usuarioDTO.getC_i_usuario() != null) {
+	        Optional<CUsuario> existente = repoUsuarios.findById(usuarioDTO.getC_i_usuario());
+	        usuario = existente.orElse(new CUsuario());
+	    } else {
+	        usuario = new CUsuario(); // AUTO_INCREMENT se encarga del ID
+	    }
 
-		usuario.setD_v_nombre(usuarioDTO.getD_v_nombre());
-		usuario.setPerfil(usuarioDTO.getPerfil());
-		// usuario.setPerfiles(null);
-		usuario.setC_n_usucap(usuarioDTO.getC_n_usucap());
-		usuario.setD_f_fechcap(usuarioDTO.getD_f_fechcap());
-		usuario.setW_v_status(usuarioDTO.getW_v_status());
+	    usuario.setD_v_nombre(usuarioDTO.getD_v_nombre());
+	    usuario.setD_v_email(usuarioDTO.getD_v_email()); 
+	    usuario.setPerfil(usuarioDTO.getPerfil());
+	    usuario.setC_n_usucap(usuarioDTO.getC_n_usucap());
+	    usuario.setD_f_fechcap(usuarioDTO.getD_f_fechcap());
+	    usuario.setW_v_status(usuarioDTO.getW_v_status());
 
-		if (usuarioDTO.getD_v_password() != null && !usuarioDTO.getD_v_password().isEmpty()) {
-			usuario.setD_v_password(usuarioDTO.getD_v_password());
-		}
+	    if (usuarioDTO.getD_v_password() != null && !usuarioDTO.getD_v_password().isEmpty()) {
+	        usuario.setD_v_password(usuarioDTO.getD_v_password());
+	    }
 
-		repoUsuarios.save(usuario);
+	    repoUsuarios.save(usuario);
 	}
 
 	@Override

@@ -59,69 +59,51 @@ public class jcUsuarios {
 	public String mostrarUsuarios(Model modelo) {
 		return "usuarios/lista_usuarios";
 	}
-
-	/* Método para guardar un usuario */
+	
 	@PostMapping("/guardar")
 	public String guardarUsuario(UsuarioDTO usuarioDTO, RedirectAttributes atributos, HttpSession session) {
-		/**/
-		CPerfil perfil = servicePerfiles.buscarPorId(usuarioDTO.getPerfil().getPk_i_perfil());
-		String nombre = serviceUsuario.obtenerNombre(usuarioDTO.getC_i_usuario());
-		if (usuarioDTO.getD_v_password().equals("")) {
-			usuarioDTO.setD_v_password(null);
-		} else {
-			String password = passwwordEncoder.encode(usuarioDTO.getD_v_password());
-			usuarioDTO.setD_v_password(password);
-		}
+	    CPerfil perfil = servicePerfiles.buscarPorId(usuarioDTO.getPerfil().getPk_i_perfil());
 
-		usuarioDTO.setD_v_nombre(nombre);
-		usuarioDTO.setPerfil(perfil);
+	    if (usuarioDTO.getD_v_password() == null || usuarioDTO.getD_v_password().equals("")) {
+	        usuarioDTO.setD_v_password(null);
+	    } else {
+	        usuarioDTO.setD_v_password(passwwordEncoder.encode(usuarioDTO.getD_v_password()));
+	    }
 
-		if (session.getAttribute("usuario") != null) {
-			CUsuario user = (CUsuario) session.getAttribute("usuario");
-			usuarioDTO.setC_n_usucap(user.getC_i_usuario());
-			serviceUsuario.guardar(usuarioDTO);
-		}
-		atributos.addFlashAttribute("mensaje", "El usuario ha sido guardado con éxito!!");
-		
-		//*/
-		return "redirect:/usuarios/lista";
+	    usuarioDTO.setPerfil(perfil);
+	    usuarioDTO.setD_f_fechcap(new Date());
+	    usuarioDTO.setW_v_status("A");
+
+	    if (session.getAttribute("usuario") != null) {
+	        CUsuario user = (CUsuario) session.getAttribute("usuario");
+	        usuarioDTO.setC_n_usucap(user.getC_i_usuario());
+	        serviceUsuario.guardar(usuarioDTO);
+	    }
+
+	    atributos.addFlashAttribute("mensaje", "El usuario ha sido guardado con éxito!!");
+	    return "redirect:/usuarios/lista";
 	}
+	
+	
 
 	/* Método para eliminar al usuario */
 	@GetMapping("/eliminar/{placa}")
 	public String eliminarUsuario(@PathVariable("placa") int c_i_placa, RedirectAttributes atributos) {
-		/*
+		/**/
 		serviceUsuario.eliminar(c_i_placa);
 		atributos.addFlashAttribute("mensaje", "El usuario ha sido eliminado con éxito!!");
-		*/
+		//*/
 		return "redirect:/usuarios/lista";
 	}
 
-	/* Método para listar los reportes por Usuario */
-	@GetMapping("/reporte")
-	public String obtenerReportes(@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaIni,
-			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin, Model modelo) {
-/*
-		modelo.addAttribute("tickets", serviceTicket.obtenerCantidadAsignados(fechaIni, fechaFin));
-		modelo.addAttribute("ticketsAreas", serviceTicket.obtenerCantidadSolicitados(fechaIni, fechaFin));
-		modelo.addAttribute("ticketsUsuarios", serviceTicket.obtenerCantidadUsuarios(fechaIni, fechaFin));
-		modelo.addAttribute("ticketsAyuda", serviceTicket.obtenerCantidadAreaAyuda(fechaIni, fechaFin));
-
-		// Para que se mantengan seleccionadas las fechas en el formulario
-		modelo.addAttribute("fechaIni", fechaIni);
-		modelo.addAttribute("fechaFin", fechaFin);
-*/
-		return "usuarios/reporte_usuarios";
-	}
 
 	/* Método que envia el objeto en JSON para poder renderizarlo en la vista */
 	@GetMapping("/buscar/{id}")
 	@ResponseBody
 	public CUsuario buscarPorId(@PathVariable("id") int idusuario) {
-		
-		CUsuario user = serviceUsuario.buscarPorPlaca(idusuario);
-		user.setD_v_password("");
-		return serviceUsuario.buscarPorPlaca(idusuario);
+	    CUsuario user = serviceUsuario.buscarPorPlaca(idusuario);
+	    user.setD_v_password("");
+	    return user; 
 	}
 
 	@GetMapping("/areasDisponibles/{usuario_id}")
@@ -175,6 +157,24 @@ public class jcUsuarios {
 					.body("Error al eliminar el área: " + e.getMessage());
 		}
 	}
+	
+	/* Método para listar los reportes por Usuario */
+	@GetMapping("/reporte")
+	public String obtenerReportes(@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaIni,
+			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin, Model modelo) {
+/*
+		modelo.addAttribute("tickets", serviceTicket.obtenerCantidadAsignados(fechaIni, fechaFin));
+		modelo.addAttribute("ticketsAreas", serviceTicket.obtenerCantidadSolicitados(fechaIni, fechaFin));
+		modelo.addAttribute("ticketsUsuarios", serviceTicket.obtenerCantidadUsuarios(fechaIni, fechaFin));
+		modelo.addAttribute("ticketsAyuda", serviceTicket.obtenerCantidadAreaAyuda(fechaIni, fechaFin));
+
+		// Para que se mantengan seleccionadas las fechas en el formulario
+		modelo.addAttribute("fechaIni", fechaIni);
+		modelo.addAttribute("fechaFin", fechaFin);
+*/
+		return "usuarios/reporte_usuarios";
+	}
+	
 
 	/* Método para mandar al modelo los recursos que se necesiten en la vista */
 	@ModelAttribute
