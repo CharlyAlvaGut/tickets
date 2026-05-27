@@ -241,27 +241,26 @@ public class ServiceTicketImp implements ITicketService {
 		return dto;
 	}
 
-	@Override
-	public List<EstadisticasDTO> obtenerCantidadAsignados(Date fechaIni, Date fechaFin) {
-		List<Object[]> results = repoTickets.findTicketsAsignados(fechaIni, fechaFin);
 
+	@Override
+	public List<EstadisticasDTO> obtenerCantidadUsuarios(String email) {
+		List<Object[]> results = repoUsuarios.findCantidadTickets(email);
 		return results.stream().map(row -> new EstadisticasDTO((String) row[0], ((Number) row[1]).intValue(),
 				((Number) row[2]).intValue(), ((Number) row[3]).intValue())).collect(Collectors.toList());
 	}
-
+	
 	@Override
-	public List<EstadisticasDTO> obtenerCantidadSolicitados(Date fechaIni, Date fechaFin) {
-		List<Object[]> results = repoTickets.findTicketsSolicitados(fechaIni, fechaFin);
-		return results.stream().map(row -> new EstadisticasDTO((String) row[0], ((Number) row[1]).intValue(),
-				((Number) row[2]).intValue(), ((Number) row[3]).intValue())).collect(Collectors.toList());
+	public List<EstadisticasDTO> obtenerTicketsPorMes(String email) {
+	    List<Object[]> results = repoUsuarios.findTicketsPorMes(email);
+	    return results.stream().map(row -> new EstadisticasDTO(
+	        (String) row[0],                    // area (mes en texto)
+	        ((Number) row[1]).intValue(),        // num_mes
+	        ((Number) row[2]).intValue(),        // cantidad_abiertos
+	        ((Number) row[3]).intValue(),        // cantidad_cerrados
+	        0                                    // cantidad_totales no aplica aquí
+	    )).collect(Collectors.toList());
 	}
 
-	@Override
-	public List<EstadisticasDTO> obtenerCantidadUsuarios(Date fechaIni, Date fechaFin) {
-		List<Object[]> results = repoUsuarios.findCantidadTickets(fechaIni, fechaFin);
-		return results.stream().map(row -> new EstadisticasDTO((String) row[0], ((Number) row[1]).intValue(),
-				((Number) row[2]).intValue(), ((Number) row[3]).intValue())).collect(Collectors.toList());
-	}
 
 	@Override
 	public CabeceraDTO obtenerCabecera(Integer pk_i_ticket, Integer pk_i_anio) {
@@ -299,14 +298,7 @@ public class ServiceTicketImp implements ITicketService {
 				(java.sql.Timestamp) row[4], row[5] != null ? row[5].toString() : null)).collect(Collectors.toList());
 	}
 
-	@Override
-	public List<EstadisticasDTO> obtenerCantidadAreaAyuda(Date fechaIni, Date fechaFin) {
-		List<Object[]> results = repoTickets.findTicketsAreaAyuda(fechaIni, fechaFin);
-		return results.stream().map(row -> new EstadisticasDTO((String) row[0], 
-				((Number) row[1]).intValue(),
-				((Number) row[2]).intValue(),
-				((Number) row[3]).intValue() 
-		)).collect(Collectors.toList());
-	}
+	
+
 
 }

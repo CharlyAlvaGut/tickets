@@ -35,12 +35,8 @@ public interface ITicketService {
 	
 	List<AsuntoDTO> obtenerAsuntos();
 
-	List<EstadisticasDTO> obtenerCantidadAsignados(Date fechaIni, Date fechaFin);
-
-	List<EstadisticasDTO> obtenerCantidadSolicitados(Date fechaIni, Date fechaFin);
+	List<EstadisticasDTO> obtenerCantidadUsuarios(String email);
 	
-	List<EstadisticasDTO> obtenerCantidadAreaAyuda(Date fechaIni, Date fechaFin);
-
-	List<EstadisticasDTO> obtenerCantidadUsuarios(Date fechaIni, Date fechaFin);
+	List<EstadisticasDTO> obtenerTicketsPorMes(String email);
 
 }

@@ -2,6 +2,7 @@ package com.pbi.tickets.dto;
 
 public class EstadisticasDTO {
 	private String area;
+	private Integer num_mes;
 	private Integer cantidad_abiertos;
 	private Integer cantidad_cerrados;
 	private Integer cantidad_totales;
@@ -16,6 +17,17 @@ public class EstadisticasDTO {
 		this.cantidad_totales = cantidad_totales;
 	}
 	
+	
+	public EstadisticasDTO(String area, Integer num_mes, Integer cantidad_abiertos, Integer cantidad_cerrados, Integer cantidad_totales) {
+	    super();
+	    this.area = area;
+	    this.num_mes = num_mes;
+	    this.cantidad_abiertos = cantidad_abiertos;
+	    this.cantidad_cerrados = cantidad_cerrados;
+	    this.cantidad_totales = cantidad_totales;
+	}
+
+	
 
 
 	public String getArea() {
@@ -25,7 +37,14 @@ public class EstadisticasDTO {
 		this.area = area;
 	}
 	
+	public Integer getNum_mes() {
+		return num_mes;
+	}
 
+	public void setNum_mes(Integer num_mes) {
+		this.num_mes = num_mes;
+	}
+	
 	public Integer getCantidad_abiertos() {
 		return cantidad_abiertos;
 	}

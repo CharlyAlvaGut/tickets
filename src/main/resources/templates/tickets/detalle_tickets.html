@@ -155,11 +155,14 @@
 						<hr class="flex-grow-1 mx-3" style="border-top: 2px solid#C3D9FF ;">
 					</div>
 
-					<div class="card-header d-flex justify-content-between align-items-center" th:style="${h.tipo_evento == 'RESPUESTA'} ? 'background-color:#FFE0B3;' :
-						          (${h.tipo_evento == 'TURNADO'} ? 'background-color:#FFFFEE;' :
-						          (${h.tipo_evento == 'NOTA INTERNA'} ? 'background-color:#FFFFEE;' :
-						          (${h.tipo_evento == 'CREACION'} ? 'background-color:#C3D9FF ;;' :
-						          (${h.tipo_evento == 'CERRADO'} ? 'background-color:#FFFFEE;' : 'background-color:##FFE0B3;'))))">
+					<div class="card-header d-flex justify-content-between align-items-center"
+						th:style="${h.tipo_evento == 'RESPUESTA'} ? 'background-color:rgba(200,169,81,0.2);' :
+					          (${h.tipo_evento == 'TURNADO'} ? 'background-color:rgba(107,18,40,0.06);' :
+					          (${h.tipo_evento == 'NOTA INTERNA'} ? 'background-color:rgba(107,18,40,0.06);' :
+					          (${h.tipo_evento == 'CREACION'} ? 'background-color:rgba(107,18,40,0.15);' :
+					          (${h.tipo_evento == 'CERRADO'} ? 'background-color:rgba(200,169,81,0.1);' : 'background-color:rgba(200,169,81,0.2);'))))">
+
+
 
 						<h6 class="m-0 text-dark" th:switch="${h.tipo_evento}">
 							<span th:case="'TURNADO'"><span th:text="${h.nombre_actor}"></span> asignó ticket a <span

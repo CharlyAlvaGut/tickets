@@ -335,9 +335,9 @@ ORDER BY fecha_evento ASC;]]>
 				</box>
 				<rectangle>
 					<reportElement mode="Opaque" x="1" y="1" width="556" height="29" backcolor="#FFFFFF" uuid="b761ae33-87b4-4ded-8f01-56831bcce2a9">
-						<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$F{tipo_evento}.equals("RESPUESTA") ? "#FFE0B3" :
-$F{tipo_evento}.equals("CREACION") ? "#C3D9FF":
-"#FCFCD4"]]></propertyExpression>
+						<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$F{tipo_evento}.equals("RESPUESTA") ? "#F5EBC8" :
+$F{tipo_evento}.equals("CREACION") ? "#F2E0E4" :
+"#F9F0F2"]]></propertyExpression>
 					</reportElement>
 					<graphicElement>
 						<pen lineWidth="0.0" lineColor="#000000"/>
