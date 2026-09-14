@@ -38,7 +38,7 @@
 						<i class="fa fa-check"></i>
 					</div>
 					<div>
-						<div style="font-size:28px; font-weight:600; color:#333;"
+						<div th:if="${stats[0]}" style="font-size:28px; font-weight:600; color:#333;"
 							th:text="${stats[0].cantidad_cerrados}">0</div>
 						<div style="font-size:12px; color:#999;">Tickets cerrados</div>
 					</div>
@@ -66,6 +66,7 @@
 
 
 	<!-- Datos para gráficas -->
+	
 	<input type="hidden" id="datosAbiertos" th:value="${stats[0].cantidad_abiertos}" />
 	<input type="hidden" id="datosCerrados" th:value="${stats[0].cantidad_cerrados}" />
 	<div id="datosMeses" style="display:none;">
@@ -126,8 +127,19 @@
 	let chartBarras = null;
 
 	$('#modalGraficas').on('shown.bs.modal', function () {
-		const abiertos = parseInt($('#datosAbiertos').val()) || 0;
-		const cerrados = parseInt($('#datosCerrados').val()) || 0;
+		op = $('#datosAbiertos').val();
+		clos = $('#datosCerrados').val();
+		
+		const abiertos = 0;
+		const cerrados = 0;
+		
+		console.log(op);
+		console.log(clos);
+		
+		if(op && clos){
+			abiertos = parseInt($('#datosAbiertos').val()) || 0;
+			cerrados = parseInt($('#datosCerrados').val()) || 0;				
+		}
 
 		const meses = [];
 		const abiertosMes = [];
