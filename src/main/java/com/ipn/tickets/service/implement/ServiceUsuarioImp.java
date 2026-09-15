@@ -49,6 +49,8 @@ public class ServiceUsuarioImp implements IUsuarioService {
 	public void guardar(UsuarioDTO usuarioDTO) {
 	    CUsuario usuario;
 
+	    System.out.println("=================> DEBUG: "+usuarioDTO.getC_i_usuario());
+	    
 	    // Si tiene ID, es edición; si no, es nuevo
 	    if (usuarioDTO.getC_i_usuario() != null) {
 	        Optional<CUsuario> existente = repoUsuarios.findById(usuarioDTO.getC_i_usuario());

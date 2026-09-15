@@ -127,19 +127,9 @@
 	let chartBarras = null;
 
 	$('#modalGraficas').on('shown.bs.modal', function () {
-		op = $('#datosAbiertos').val();
-		clos = $('#datosCerrados').val();
+		const abiertos = parseInt($('#datosAbiertos').val()) || 0;
+		const cerrados = parseInt($('#datosCerrados').val()) || 0;				
 		
-		const abiertos = 0;
-		const cerrados = 0;
-		
-		console.log(op);
-		console.log(clos);
-		
-		if(op && clos){
-			abiertos = parseInt($('#datosAbiertos').val()) || 0;
-			cerrados = parseInt($('#datosCerrados').val()) || 0;				
-		}
 
 		const meses = [];
 		const abiertosMes = [];

@@ -64,6 +64,7 @@ public class jcUsuarios {
 	public String guardarUsuario(UsuarioDTO usuarioDTO, RedirectAttributes atributos, HttpSession session) {
 	    CPerfil perfil = servicePerfiles.buscarPorId(usuarioDTO.getPerfil().getPk_i_perfil());
 
+	    
 	    if (usuarioDTO.getD_v_password() == null || usuarioDTO.getD_v_password().equals("")) {
 	        usuarioDTO.setD_v_password(null);
 	    } else {
