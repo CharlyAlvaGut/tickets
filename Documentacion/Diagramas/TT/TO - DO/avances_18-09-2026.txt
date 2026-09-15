@@ -1,0 +1,19 @@
+Avances para viernes 18 de septiembre de 2026
+
+Casos de Uso
+- Ricsan: Crear Ticket, Editar Ticket, Responder Ticket, Reasignar Ticket, Buscar/Enlistar Ticket,  Imprimir Ticket (6)
+- Charly: Crear Documento, Reasignar Documento, Consultar Documento, Iniciar Sesión, Consultar Ticket, Gestionar catálogos
+
+Diagrama de clases. Ricsan lo corrige y yo lo embellezco
+
+Hacer el diagrama de arquitectura. Entre los dos 
+
+Capitulo 1. Charly lo llena del protocolo y Ricsan lo hace entendible y lo embellece
+
+Capitulo 2. Investigar e ir llenando entre los dos el estado del arte 
+
+Capitulo 3. Investigar e ir llenando entre los dos el Marco Teórico 
+
+Capitulo 4. Ricsan corrige requerimientos, Charly hace reglas de negocio
+
+Hacer nuevo cronograma con Ricsan juajuajua porque de momento no está haciendo nada
