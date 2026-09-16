@@ -1,10 +1,10 @@
 Avances para viernes 18 de septiembre de 2026
 
-Casos de Uso
+Casos de Uso (------------------------------------> OK <------------------------------------)
 - Ricsan: Crear Ticket, Editar Ticket, Responder Ticket, Reasignar Ticket, Buscar/Enlistar Ticket,  Imprimir Ticket (6)
 - Charly: Crear Documento, Reasignar Documento, Consultar Documento, Iniciar Sesión, Consultar Ticket, Gestionar catálogos
 
-Diagrama de clases. Ricsan lo corrige y yo lo embellezco
+Diagrama de clases. Ricsan lo corrige y yo lo embellezco (------------------------------------> OK <------------------------------------)
 
 Hacer el diagrama de arquitectura. Entre los dos 
 
