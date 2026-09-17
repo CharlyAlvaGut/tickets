@@ -6,14 +6,14 @@ Casos de Uso (------------------------------------> OK <------------------------
 
 Diagrama de clases. Ricsan lo corrige y yo lo embellezco (------------------------------------> OK <------------------------------------)
 
-Hacer el diagrama de arquitectura. Entre los dos 
+Hacer el diagrama de arquitectura. Entre los dos (------------------------------------> OK <------------------------------------)
 
-Capitulo 1. Charly lo llena del protocolo y Ricsan lo hace entendible y lo embellece
+Capitulo 1. Charly lo llena del protocolo y Ricsan lo hace entendible y lo embellece (------------------------------------> OK <------------------------------------)
 
-Capitulo 2. Investigar e ir llenando entre los dos el estado del arte 
+Capitulo 2. Investigar e ir llenando entre los dos el estado del arte (------------------------------------> NO <------------------------------------)
 
-Capitulo 3. Investigar e ir llenando entre los dos el Marco Teórico 
+Capitulo 3. Investigar e ir llenando entre los dos el Marco Teórico (------------------------------------> NO <------------------------------------)
 
-Capitulo 4. Ricsan corrige requerimientos, Charly hace reglas de negocio
+Capitulo 4. Ricsan corrige requerimientos, Charly hace reglas de negocio (------------------------------------> CASI OK <------------------------------------)
 
-Hacer nuevo cronograma con Ricsan juajuajua porque de momento no está haciendo nada
+Hacer nuevo cronograma con Ricsan juajuajua porque de momento no está haciendo nada (------------------------------------> CASI OK <------------------------------------)
