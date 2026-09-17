@@ -1,5 +1,7 @@
 Avances para viernes 18 de septiembre de 2026
 
+Hacer nuevo cronograma con Ricsan juajuajua porque de momento no está haciendo nada (------------------------------------> OK <------------------------------------)
+
 Casos de Uso (------------------------------------> OK <------------------------------------)
 - Ricsan: Crear Ticket, Editar Ticket, Responder Ticket, Reasignar Ticket, Buscar/Enlistar Ticket,  Imprimir Ticket (6)
 - Charly: Crear Documento, Reasignar Documento, Consultar Documento, Iniciar Sesión, Consultar Ticket, Gestionar catálogos
@@ -16,4 +18,4 @@ Capitulo 3. Investigar e ir llenando entre los dos el Marco Teórico (----------
 
 Capitulo 4. Ricsan corrige requerimientos, Charly hace reglas de negocio (------------------------------------> CASI OK <------------------------------------)
 
-Hacer nuevo cronograma con Ricsan juajuajua porque de momento no está haciendo nada (------------------------------------> CASI OK <------------------------------------)
+
