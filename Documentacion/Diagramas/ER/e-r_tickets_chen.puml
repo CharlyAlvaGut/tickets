@@ -1,0 +1,116 @@
+@startuml diagrama_er_tickets_chen
+' Diagrama Entidad-Relacion (notacion de Chen) - db_tickets
+' Entidades = rectangulos | Relaciones = rombos | Cardinalidad = etiquetas en lineas
+
+hide empty description
+skinparam linetype ortho
+skinparam nodesep 55
+skinparam ranksep 80
+skinparam state {
+  BackgroundColor<<choice>> #FEF3C7
+  BorderColor<<choice>> #D97706
+  BackgroundColor #EFF6FF
+  BorderColor #2563EB
+  FontSize 12
+}
+
+' ---------- Entidades ----------
+
+state "c_adscrip\n--\n*c_i_adscrip : int <<PK>>\n--\nd_v_adscrip : varchar(100)\nd_v_siglas : varchar(20)\nc_n_usucap : int\nd_f_fechcap : datetime\nw_v_status : varchar(1)" as c_adscrip
+state "c_asunto\n--\n*pk_i_asunto : int <<PK>>\n--\nc_i_adscrip : int <<FK>>\nd_v_asunto : varchar(200)\nc_n_usucap : int\nd_f_fechcap : datetime\nw_v_status : varchar(1)" as c_asunto
+state "c_clasedoc\n--\n*pk_i_clase : int <<PK>>\n--\nd_v_clase : varchar(25)\nd_b_estado : tinyint(1)\nc_n_usucap : int\nf_d_fechcap : datetime\nw_v_status : varchar(1)" as c_clasedoc
+state "c_documento\n--\n*pk_i_tipodoc : int <<PK>>\n--\nd_v_tipodoc : varchar(20)\nc_n_usucap : int\nd_f_fechcap : datetime\nw_v_status : varchar(1)" as c_documento
+state "c_estado\n--\n*pk_i_estado : int <<PK>>\n--\nd_v_estado : varchar(20)\nc_n_usucap : int\nd_f_fechcap : datetime\nw_v_status : varchar(1)" as c_estado
+state "c_fuente\n--\n*pk_i_fuente : int <<PK>>\n--\nd_v_fuente : varchar(100)\nc_n_usucap : int\nd_f_fechcap : datetime\nw_v_status : varchar(1)" as c_fuente
+state "c_perfil\n--\n*pk_i_perfil : int <<PK>>\n--\nd_v_perfil : varchar(100)\nc_n_usucap : int\nd_f_fechcap : datetime\nw_v_status : varchar(1)" as c_perfil
+state "c_respuesta\n--\n*pk_i_respuesta : int <<PK>>\n--\nd_v_respuesta : varchar(20)\nc_n_usucap : int\nd_f_fechcap : datetime\nw_v_status : varchar(1)" as c_respuesta
+state "c_usuario\n--\n*c_i_usuario : int <<PK>>\n*d_v_email : varchar(45) <<PK>>\n--\nd_v_nombre : varchar(45)\nd_v_password : varchar(100)\npk_i_perfil : int <<FK>>\nc_i_adscri : int\nc_n_usucap : int\nd_f_fechcap : datetime\nw_v_status : varchar(1)" as c_usuario
+state "c_vigencia\n--\n*pk_i_vigencia : int <<PK>>\n--\nc_i_adscrip : int <<FK>>\nd_i_horas : int\nc_n_usucap : int\nd_f_fechcap : datetime\nw_v_status : varchar(1)" as c_vigencia
+state "d_doctos\n--\n*pk_i_folio : int <<PK, FK>>\n--\nd_v_nomdocto : varchar(255)\nd_b_documento : longblob\nc_n_usucap : int\nf_d_fechcap : datetime\nw_v_status : varchar(1)" as d_doctos
+state "d_documento\n--\n*pk_i_ticket : int <<PK, FK>>\n*pk_i_anio : int <<PK, FK>>\n*d_n_consec : int <<PK>>\n--\nd_v_nomdocto : varchar(255)\nd_b_documento : longblob\npk_i_tipodoc : int <<FK>>\nc_n_usucap : int\nd_f_fechcap : datetime\nw_v_status : varchar(1)" as d_documento
+state "d_emision\n--\n*pk_i_folio : int <<PK, FK>>\n--\nd_v_asunto : text\nd_b_urgente : tinyint(1)\nf_d_fechresolver : date\nd_v_doctos : varchar(500)\nd_v_referencia : varchar(255)\nd_v_acuerdo : varchar(255)\nd_v_obser : varchar(255)\npk_i_dispdoc : int\npk_i_situacion : int\nc_n_usucap : int\nf_d_fechcap : datetime\nw_v_status : varchar(1)" as d_emision
+state "d_recepcion\n--\n*pk_i_folio : int <<PK, FK>>\n*c_i_adsc_recibe : int <<PK>>\n--\nd_n_folio_arearec : int\nd_f_fech_recibio : date\nd_f_hora_recibio : time\nc_n_usu_recibio : int\nc_i_tipo_turnado : int\nc_i_adsc_turnado : int\nd_n_usu_turnado : int\nc_i_area_turnado : int\nc_i_externo_turnado : int\nc_i_grupo_turnado : int\nd_v_numdocto_turnado : varchar(50)\nd_v_instrucciones : varchar(255)\nd_v_seguimiento : varchar(10)\npk_i_situacion : int\nd_n_edoreg : int\nf_d_fech_turnado : date\nf_d_hora_turnado : time\nc_i_adsc_turna : int\nd_f_fech_resolver : date\npk_i_dispdoc : int\nd_fec_leido : date\nd_b_urgente : tinyint(1)\nd_v_asunto : text\nc_n_usucap : int\nf_d_fechcap : datetime\nw_v_status : varchar(1)" as d_recepcion
+state "d_ticket\n--\n*pk_i_ticket : int <<PK, FK>>\n*pk_i_anio : int <<PK, FK>>\n*d_n_consec : int <<PK>>\n--\npk_i_respuesta : int <<FK>>\nc_i_numemp : int\nd_v_comentario : text\nc_n_usucap : int\nd_f_fechcap : datetime\nw_v_status : varchar(1)" as d_ticket
+state "d_usuarioadscrip\n--\n*c_i_usuario : int <<PK, FK>>\n*c_i_adscrip : int <<PK, FK>>\n--\nc_n_usucap : int\nd_f_fechcap : datetime\nw_v_status : varchar(1)" as d_usuarioadscrip
+state "m_cgestion\n--\n*pk_i_folio : int <<PK>>\n--\npk_i_clase : int <<FK>>\nd_v_numdocto : varchar(50)\nd_f_fechdocto : date\nc_i_adsc_rem : int\nc_n_usu_rem : int\nc_i_adsc_dest : int\nc_n_usu_dest : int\nc_n_usu_elabo : int\nc_i_adsc_elabo : int\nc_n_usucap : int\nf_d_fechcap : datetime\nw_v_status : varchar(1)" as m_cgestion
+state "m_ticket\n--\n*pk_i_ticket : int <<PK>>\n*pk_i_anio : int <<PK>>\n--\nd_f_fecha : date\nc_i_adscrip : int <<FK>>\nc_i_numemp : int\nc_i_adscripasigna : int <<FK>>\nc_i_numempasigna : int\npk_i_asunto : int <<FK>>\nd_v_asunto : text\npk_i_estado : int <<FK>>\npk_i_vigencia : int <<FK>>\npk_i_folio : int\npk_i_fuente : int <<FK>>\nc_n_usucap : int\nc_n_usucierre : int\nd_f_fechcierre : datetime\nd_f_fechcap : datetime\nw_v_status : varchar(1)" as m_ticket
+
+' ---------- Relaciones (rombos) ----------
+
+state R_asunto_adscrip <<choice>>
+c_adscrip --> R_asunto_adscrip : "1"
+R_asunto_adscrip --> c_asunto : "N"
+
+state R_vigencia_adscrip <<choice>>
+c_adscrip --> R_vigencia_adscrip : "1"
+R_vigencia_adscrip --> c_vigencia : "N"
+
+state R_usuadscrip_adscrip <<choice>>
+c_adscrip --> R_usuadscrip_adscrip : "1"
+R_usuadscrip_adscrip --> d_usuarioadscrip : "N"
+
+state R_ticket_solicita <<choice>>
+c_adscrip --> R_ticket_solicita : "1"
+R_ticket_solicita --> m_ticket : "N"
+
+state R_ticket_asigna <<choice>>
+c_adscrip --> R_ticket_asigna : "1"
+R_ticket_asigna --> m_ticket : "N"
+
+state R_usuario_perfil <<choice>>
+c_perfil --> R_usuario_perfil : "1"
+R_usuario_perfil --> c_usuario : "N"
+
+state R_usuadscrip_usuario <<choice>>
+c_usuario --> R_usuadscrip_usuario : "1"
+R_usuadscrip_usuario --> d_usuarioadscrip : "N"
+
+state R_cgestion_clase <<choice>>
+c_clasedoc --> R_cgestion_clase : "1"
+R_cgestion_clase --> m_cgestion : "N"
+
+state R_folio_doctos <<choice>>
+m_cgestion --> R_folio_doctos : "1"
+R_folio_doctos --> d_doctos : "1"
+
+state R_folio_emision <<choice>>
+m_cgestion --> R_folio_emision : "1"
+R_folio_emision --> d_emision : "1"
+
+state R_folio_recepcion <<choice>>
+m_cgestion --> R_folio_recepcion : "1"
+R_folio_recepcion --> d_recepcion : "N"
+
+state R_documento_tipodoc <<choice>>
+c_documento --> R_documento_tipodoc : "1"
+R_documento_tipodoc --> d_documento : "N"
+
+state R_ticket_respuesta <<choice>>
+c_respuesta --> R_ticket_respuesta : "1"
+R_ticket_respuesta --> d_ticket : "N"
+
+state R_mticket_asunto <<choice>>
+c_asunto --> R_mticket_asunto : "1"
+R_mticket_asunto --> m_ticket : "N"
+
+state R_mticket_estado <<choice>>
+c_estado --> R_mticket_estado : "1"
+R_mticket_estado --> m_ticket : "N"
+
+state R_mticket_vigencia <<choice>>
+c_vigencia --> R_mticket_vigencia : "1"
+R_mticket_vigencia --> m_ticket : "N"
+
+state R_mticket_fuente <<choice>>
+c_fuente --> R_mticket_fuente : "1"
+R_mticket_fuente --> m_ticket : "N"
+
+state R_mticket_ddocumento <<choice>>
+m_ticket --> R_mticket_ddocumento : "1"
+R_mticket_ddocumento --> d_documento : "N"
+
+state R_mticket_dticket <<choice>>
+m_ticket --> R_mticket_dticket : "1"
+R_mticket_dticket --> d_ticket : "N"
+
+@enduml

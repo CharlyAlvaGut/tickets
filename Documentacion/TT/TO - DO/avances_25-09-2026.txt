@@ -1,0 +1,18 @@
+Avances para viernes 25 de septiembre de 2026
+
+Casos de Uso
+Charly: Corregir diagrama de casos de uso para Gestionar catálogos
+Charly: Diagrama de clases.
+Charly: Entidad relación (------------------------------------> OK <------------------------------------)
+
+Ricsan: Hacer el diagrama de arquitectura. Foto adjunta
+
+Capitulo 1. Revisar objetivos (no prioridad)
+
+Capitulo 2. Irlo llenando poco a poco
+
+Capitulo 3. Irlo llenando poco a poco (no prioridad)
+
+Capitulo 4. Acabar con el 4
+
+

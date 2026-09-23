@@ -1,0 +1,271 @@
+@startuml diagrama_er_tickets
+' Diagrama Entidad-Relación - db_tickets
+' Generado a partir del dump SQL proporcionado
+
+hide circle
+skinparam linetype ortho
+skinparam nodesep 70
+skinparam ranksep 90
+
+entity "c_adscrip" as c_adscrip {
+  *c_i_adscrip : int <<PK>>
+  --
+  d_v_adscrip : varchar(100)
+  d_v_siglas : varchar(20)
+  c_n_usucap : int
+  d_f_fechcap : datetime
+  w_v_status : varchar(1)
+}
+
+entity "c_asunto" as c_asunto {
+  *pk_i_asunto : int <<PK>>
+  --
+  c_i_adscrip : int <<FK>>
+  d_v_asunto : varchar(200)
+  c_n_usucap : int
+  d_f_fechcap : datetime
+  w_v_status : varchar(1)
+}
+
+entity "c_clasedoc" as c_clasedoc {
+  *pk_i_clase : int <<PK>>
+  --
+  d_v_clase : varchar(25)
+  d_b_estado : tinyint(1)
+  c_n_usucap : int
+  f_d_fechcap : datetime
+  w_v_status : varchar(1)
+}
+
+entity "c_documento" as c_documento {
+  *pk_i_tipodoc : int <<PK>>
+  --
+  d_v_tipodoc : varchar(20)
+  c_n_usucap : int
+  d_f_fechcap : datetime
+  w_v_status : varchar(1)
+}
+
+entity "c_estado" as c_estado {
+  *pk_i_estado : int <<PK>>
+  --
+  d_v_estado : varchar(20)
+  c_n_usucap : int
+  d_f_fechcap : datetime
+  w_v_status : varchar(1)
+}
+
+entity "c_fuente" as c_fuente {
+  *pk_i_fuente : int <<PK>>
+  --
+  d_v_fuente : varchar(100)
+  c_n_usucap : int
+  d_f_fechcap : datetime
+  w_v_status : varchar(1)
+}
+
+entity "c_perfil" as c_perfil {
+  *pk_i_perfil : int <<PK>>
+  --
+  d_v_perfil : varchar(100)
+  c_n_usucap : int
+  d_f_fechcap : datetime
+  w_v_status : varchar(1)
+}
+
+entity "c_respuesta" as c_respuesta {
+  *pk_i_respuesta : int <<PK>>
+  --
+  d_v_respuesta : varchar(20)
+  c_n_usucap : int
+  d_f_fechcap : datetime
+  w_v_status : varchar(1)
+}
+
+entity "c_usuario" as c_usuario {
+  *c_i_usuario : int <<PK>>
+  *d_v_email : varchar(45) <<PK>>
+  --
+  d_v_nombre : varchar(45)
+  d_v_password : varchar(100)
+  pk_i_perfil : int <<FK>>
+  c_i_adscri : int
+  c_n_usucap : int
+  d_f_fechcap : datetime
+  w_v_status : varchar(1)
+}
+
+entity "c_vigencia" as c_vigencia {
+  *pk_i_vigencia : int <<PK>>
+  --
+  c_i_adscrip : int <<FK>>
+  d_i_horas : int
+  c_n_usucap : int
+  d_f_fechcap : datetime
+  w_v_status : varchar(1)
+}
+
+entity "d_doctos" as d_doctos {
+  *pk_i_folio : int <<PK, FK>>
+  --
+  d_v_nomdocto : varchar(255)
+  d_b_documento : longblob
+  c_n_usucap : int
+  f_d_fechcap : datetime
+  w_v_status : varchar(1)
+}
+
+entity "d_documento" as d_documento {
+  *pk_i_ticket : int <<PK, FK>>
+  *pk_i_anio : int <<PK, FK>>
+  *d_n_consec : int <<PK>>
+  --
+  d_v_nomdocto : varchar(255)
+  d_b_documento : longblob
+  pk_i_tipodoc : int <<FK>>
+  c_n_usucap : int
+  d_f_fechcap : datetime
+  w_v_status : varchar(1)
+}
+
+entity "d_emision" as d_emision {
+  *pk_i_folio : int <<PK, FK>>
+  --
+  d_v_asunto : text
+  d_b_urgente : tinyint(1)
+  f_d_fechresolver : date
+  d_v_doctos : varchar(500)
+  d_v_referencia : varchar(255)
+  d_v_acuerdo : varchar(255)
+  d_v_obser : varchar(255)
+  pk_i_dispdoc : int
+  pk_i_situacion : int
+  c_n_usucap : int
+  f_d_fechcap : datetime
+  w_v_status : varchar(1)
+}
+
+entity "d_recepcion" as d_recepcion {
+  *pk_i_folio : int <<PK, FK>>
+  *c_i_adsc_recibe : int <<PK>>
+  --
+  d_n_folio_arearec : int
+  d_f_fech_recibio : date
+  d_f_hora_recibio : time
+  c_n_usu_recibio : int
+  c_i_tipo_turnado : int
+  c_i_adsc_turnado : int
+  d_n_usu_turnado : int
+  c_i_area_turnado : int
+  c_i_externo_turnado : int
+  c_i_grupo_turnado : int
+  d_v_numdocto_turnado : varchar(50)
+  d_v_instrucciones : varchar(255)
+  d_v_seguimiento : varchar(10)
+  pk_i_situacion : int
+  d_n_edoreg : int
+  f_d_fech_turnado : date
+  f_d_hora_turnado : time
+  c_i_adsc_turna : int
+  d_f_fech_resolver : date
+  pk_i_dispdoc : int
+  d_fec_leido : date
+  d_b_urgente : tinyint(1)
+  d_v_asunto : text
+  c_n_usucap : int
+  f_d_fechcap : datetime
+  w_v_status : varchar(1)
+}
+
+entity "d_ticket" as d_ticket {
+  *pk_i_ticket : int <<PK, FK>>
+  *pk_i_anio : int <<PK, FK>>
+  *d_n_consec : int <<PK>>
+  --
+  pk_i_respuesta : int <<FK>>
+  c_i_numemp : int
+  d_v_comentario : text
+  c_n_usucap : int
+  d_f_fechcap : datetime
+  w_v_status : varchar(1)
+}
+
+entity "d_usuarioadscrip" as d_usuarioadscrip {
+  *c_i_usuario : int <<PK, FK>>
+  *c_i_adscrip : int <<PK, FK>>
+  --
+  c_n_usucap : int
+  d_f_fechcap : datetime
+  w_v_status : varchar(1)
+}
+
+entity "m_cgestion" as m_cgestion {
+  *pk_i_folio : int <<PK>>
+  --
+  pk_i_clase : int <<FK>>
+  d_v_numdocto : varchar(50)
+  d_f_fechdocto : date
+  c_i_adsc_rem : int
+  c_n_usu_rem : int
+  c_i_adsc_dest : int
+  c_n_usu_dest : int
+  c_n_usu_elabo : int
+  c_i_adsc_elabo : int
+  c_n_usucap : int
+  f_d_fechcap : datetime
+  w_v_status : varchar(1)
+}
+
+entity "m_ticket" as m_ticket {
+  *pk_i_ticket : int <<PK>>
+  *pk_i_anio : int <<PK>>
+  --
+  d_f_fecha : date
+  c_i_adscrip : int <<FK>>
+  c_i_numemp : int
+  c_i_adscripasigna : int <<FK>>
+  c_i_numempasigna : int
+  pk_i_asunto : int <<FK>>
+  d_v_asunto : text
+  pk_i_estado : int <<FK>>
+  pk_i_vigencia : int <<FK>>
+  pk_i_folio : int
+  pk_i_fuente : int <<FK>>
+  c_n_usucap : int
+  c_n_usucierre : int
+  d_f_fechcierre : datetime
+  d_f_fechcap : datetime
+  w_v_status : varchar(1)
+}
+
+' ---------- Relaciones ----------
+
+c_adscrip ||--o{ c_asunto : "c_i_adscrip"
+c_adscrip ||--o{ c_vigencia : "c_i_adscrip"
+c_adscrip ||--o{ d_usuarioadscrip : "c_i_adscrip"
+c_adscrip ||--o{ m_ticket : "solicita"
+c_adscrip ||--o{ m_ticket : "asigna"
+
+c_perfil ||--o{ c_usuario : "pk_i_perfil"
+
+c_usuario ||--o{ d_usuarioadscrip : "c_i_usuario"
+
+c_clasedoc ||--o{ m_cgestion : "pk_i_clase"
+
+m_cgestion ||--|| d_doctos : "pk_i_folio"
+m_cgestion ||--|| d_emision : "pk_i_folio"
+m_cgestion ||--o{ d_recepcion : "pk_i_folio"
+
+c_documento ||--o{ d_documento : "pk_i_tipodoc"
+
+c_respuesta ||--o{ d_ticket : "pk_i_respuesta"
+
+c_asunto ||--o{ m_ticket : "pk_i_asunto"
+c_estado ||--o{ m_ticket : "pk_i_estado"
+c_vigencia ||--o{ m_ticket : "pk_i_vigencia"
+c_fuente ||--o{ m_ticket : "pk_i_fuente"
+
+m_ticket ||--o{ d_documento : "pk_i_ticket, pk_i_anio"
+m_ticket ||--o{ d_ticket : "pk_i_ticket, pk_i_anio"
+
+@enduml
