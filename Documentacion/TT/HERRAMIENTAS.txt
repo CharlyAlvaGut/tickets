@@ -1,0 +1,7 @@
+BUENAS PRACTICAS
+SonarQube
+
+ArchUnit
+Pruebas unitarias en términos de arquitectura
+
+
