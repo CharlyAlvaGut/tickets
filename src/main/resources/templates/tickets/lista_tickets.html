@@ -93,17 +93,28 @@
 										class="btn btn-info btn-sm" title="Ver Ticket">
 										<i class="fa fa-info-circle" aria-hidden="true"></i>
 									</a>
+
+
 									<!--
-									<a th:href="@{/ordenes/reporte/{pk_i_ticket}/{pk_i_anio}(pk_i_ticket=${ticket.pk_i_ticket}, pk_i_anio=${ticket.pk_i_anio})}"
-										class="btn btn-success btn-sm" title="Imprimir Ticket" target="_blank">
-										<i class="fa fa-print" aria-hidden="true"></i>
+									<a href="#"
+										class="btn btn-info btn-sm" title="Ver Ticket">
+										<i class="fa fa-info-circle" aria-hidden="true"></i>
+									</a>	
+										
+										
+									
+									<a th:href="@{/ordenes/detalle/{pk_i_ticket}/{pk_i_anio}(pk_i_ticket=${ticket.pk_i_ticket}, pk_i_anio=${ticket.pk_i_anio})}"
+										class="btn btn-info btn-sm" title="Ver Ticket">
+										<i class="fa fa-info-circle" aria-hidden="true"></i>
 									</a>
-									-->
+
+									
 									<a href="#" class="btn btn-success btn-sm imprimir-ticket" title="Imprimir Ticket"
 										target="_blank"
 										th:data-url="@{/ordenes/reporte/{pk_i_ticket}/{pk_i_anio}(pk_i_ticket=${ticket.pk_i_ticket}, pk_i_anio=${ticket.pk_i_anio})}">
 										<i class="fa fa-print" aria-hidden="true"></i>
 									</a>
+								 	-->
 								</td>
 							</tr>
 						</tbody>
@@ -158,7 +169,7 @@
 			const hoy = new Date();
 
 			const yyyy = hoy.getFullYear();
-			const mm = String(hoy.getMonth() + 1).padStart(2, '0'); 
+			const mm = String(hoy.getMonth() + 1).padStart(2, '0');
 			const dd = String(hoy.getDate()).padStart(2, '0');
 
 			const fechaActual = `${yyyy}-${mm}-${dd}`;
