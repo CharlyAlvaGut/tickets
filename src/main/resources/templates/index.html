@@ -2,169 +2,532 @@
 
 <!-- page content -->
 <div class="right_col" role="main">
+
 	<div class="page-title">
 		<div class="title_left"></div>
 		<br>
+
 		<span class="text-center d-block">
 			<h3 style="color: #6B1228;">Bienvenid@</h3>
 			<h5 style="color: #6B1228;">ÓRDEN DE SERVICIO</h5>
 		</span>
+
 		<br>
 	</div>
 
-	<!-- Tarjetas de resumen -->
-	<div class="row" style="padding: 0 10px; margin-top: 80px; margin-bottom: 20px;" th:if="${stats != null}">
 
-		<div class="col-md-4" th:each="stat : ${stats}">
+	<!-- ========================================================= -->
+	<!-- TARJETAS DE RESUMEN -->
+	<!-- ========================================================= -->
+
+	<div class="row"
+		style="padding: 0 10px; margin-top: 80px; margin-bottom: 20px;">
+
+		<!-- Tickets abiertos -->
+		<div class="col-md-4">
+
 			<div class="x_panel" style="border-left: 4px solid #6B1228;">
-				<div class="x_content" style="display:flex; align-items:center; gap:15px;">
+
+				<div class="x_content"
+					style="display:flex; align-items:center; gap:15px;">
+
 					<div
-						style="background:rgba(107,18,40,0.1); border-radius:8px; padding:12px; color:#6B1228; font-size:24px;">
+						style="background:rgba(107,18,40,0.1);
+							   border-radius:8px;
+							   padding:12px;
+							   color:#6B1228;
+							   font-size:24px;">
+
 						<i class="fa fa-ticket"></i>
+
 					</div>
+
 					<div>
-						<div style="font-size:28px; font-weight:600; color:#333;" th:text="${stat.cantidad_abiertos}">0
+
+						<div
+							style="font-size:28px;
+								   font-weight:600;
+								   color:#333;"
+							th:text="${stats != null and !stats.isEmpty()
+								? stats[0].cantidad_abiertos
+								: 0}">
+							0
 						</div>
-						<div style="font-size:12px; color:#999;">Tickets abiertos</div>
+
+						<div style="font-size:12px; color:#999;">
+							Tickets abiertos
+						</div>
+
 					</div>
+
 				</div>
+
 			</div>
+
 		</div>
 
+
+		<!-- Tickets cerrados -->
 		<div class="col-md-4">
+
 			<div class="x_panel" style="border-left: 4px solid #aaa;">
-				<div class="x_content" style="display:flex; align-items:center; gap:15px;">
-					<div style="background:#f0f0f0; border-radius:8px; padding:12px; color:#666; font-size:24px;">
-						<i class="fa fa-check"></i>
-					</div>
-					<div>
-						<div th:if="${stats[0]}" style="font-size:28px; font-weight:600; color:#333;"
-							th:text="${stats[0].cantidad_cerrados}">0</div>
-						<div style="font-size:12px; color:#999;">Tickets cerrados</div>
-					</div>
-				</div>
-			</div>
-		</div>
 
-		<div class="col-md-4">
-			<div class="x_panel" style="border-left: 4px solid #C8A951;">
-				<div class="x_content" style="display:flex; align-items:center; gap:15px;">
+				<div class="x_content"
+					style="display:flex; align-items:center; gap:15px;">
+
 					<div
-						style="background:rgba(200,169,81,0.15); border-radius:8px; padding:12px; color:#a07a1a; font-size:24px;">
-						<i class="fa fa-list"></i>
+						style="background:#f0f0f0;
+							   border-radius:8px;
+							   padding:12px;
+							   color:#666;
+							   font-size:24px;">
+
+						<i class="fa fa-check"></i>
+
 					</div>
+
 					<div>
-						<div style="font-size:28px; font-weight:600; color:#333;"
-							th:text="${stats[0].cantidad_totales}">0</div>
-						<div style="font-size:12px; color:#999;">Total de tickets</div>
+
+						<div
+							style="font-size:28px;
+								   font-weight:600;
+								   color:#333;"
+							th:text="${stats != null and !stats.isEmpty()
+								? stats[0].cantidad_cerrados
+								: 0}">
+							0
+						</div>
+
+						<div style="font-size:12px; color:#999;">
+							Tickets cerrados
+						</div>
+
 					</div>
+
 				</div>
+
 			</div>
+
+		</div>
+
+
+		<!-- Total de tickets -->
+		<div class="col-md-4">
+
+			<div class="x_panel" style="border-left: 4px solid #C8A951;">
+
+				<div class="x_content"
+					style="display:flex; align-items:center; gap:15px;">
+
+					<div
+						style="background:rgba(200,169,81,0.15);
+							   border-radius:8px;
+							   padding:12px;
+							   color:#a07a1a;
+							   font-size:24px;">
+
+						<i class="fa fa-list"></i>
+
+					</div>
+
+					<div>
+
+						<div
+							style="font-size:28px;
+								   font-weight:600;
+								   color:#333;"
+							th:text="${stats != null and !stats.isEmpty()
+								? stats[0].cantidad_totales
+								: 0}">
+							0
+						</div>
+
+						<div style="font-size:12px; color:#999;">
+							Total de tickets
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
 		</div>
 
 	</div>
 
 
-	<!-- Datos para gráficas -->
-	
-	<input type="hidden" id="datosAbiertos" th:value="${stats[0].cantidad_abiertos}" />
-	<input type="hidden" id="datosCerrados" th:value="${stats[0].cantidad_cerrados}" />
+	<!-- ========================================================= -->
+	<!-- DATOS PARA LAS GRÁFICAS -->
+	<!-- ========================================================= -->
+
+	<input type="hidden"
+		id="datosAbiertos"
+		th:value="${stats != null and !stats.isEmpty()
+			? stats[0].cantidad_abiertos
+			: 0}" />
+
+	<input type="hidden"
+		id="datosCerrados"
+		th:value="${stats != null and !stats.isEmpty()
+			? stats[0].cantidad_cerrados
+			: 0}" />
+
+
+	<!-- Datos mensuales -->
 	<div id="datosMeses" style="display:none;">
-		<span th:each="g : ${grafico}" th:data-mes="${g.area}" th:data-abiertos="${g.cantidad_abiertos}"
-			th:data-cerrados="${g.cantidad_cerrados}" class="dato-mes">
+
+		<span
+			th:if="${grafico != null}"
+			th:each="g : ${grafico}"
+			th:data-mes="${g.area}"
+			th:data-abiertos="${g.cantidad_abiertos}"
+			th:data-cerrados="${g.cantidad_cerrados}"
+			class="dato-mes">
 		</span>
+
 	</div>
 
-	<!-- Logo marca de agua -->
+
+	<!-- ========================================================= -->
+	<!-- LOGO MARCA DE AGUA -->
+	<!-- ========================================================= -->
+
 	<div class="d-none d-sm-block text-center">
-		<img th:src="@{/assets/img/logo_ipn.png}" class="img-fluid"
-			style="max-width: 500px; opacity: 0.12; margin-top: 20px;">
+
+		<img
+			th:src="@{/assets/img/logo_ipn.png}"
+			class="img-fluid"
+			style="max-width: 500px;
+				   opacity: 0.12;
+				   margin-top: 20px;">
+
 	</div>
 
 	<div class="clearfix"></div>
+
 </div>
 
-<button id="btnGraficas" onclick="$('#modalGraficas').modal('show')" style="position:fixed; bottom:70px; right:30px; z-index:9999;
-               background:#6B1228; color:#fff; border:none; border-radius:50%;
-               width:55px; height:55px; font-size:22px; cursor:pointer;
-               box-shadow: 0 4px 12px rgba(0,0,0,0.3);" title="Ver gráficas">
+
+<!-- ========================================================= -->
+<!-- BOTÓN PARA GRÁFICAS -->
+<!-- ========================================================= -->
+
+<!--
+<button
+	id="btnGraficas"
+	onclick="$('#modalGraficas').modal('show')"
+	style="
+		position:fixed;
+		bottom:70px;
+		right:30px;
+		z-index:9999;
+		background:#6B1228;
+		color:#fff;
+		border:none;
+		border-radius:50%;
+		width:55px;
+		height:55px;
+		font-size:22px;
+		cursor:pointer;
+		box-shadow:0 4px 12px rgba(0,0,0,0.3);
+	"
+	title="Ver gráficas">
+
 	<i class="fa fa-bar-chart"></i>
-</button>
 
-<!-- Modal gráficas -->
-<div class="modal fade" id="modalGraficas" tabindex="-1" role="dialog">
-	<div class="modal-dialog modal-lg" role="document">
+</button>
+-->
+
+
+<!-- ========================================================= -->
+<!-- MODAL GRÁFICAS -->
+<!-- ========================================================= -->
+
+<div
+	class="modal fade"
+	id="modalGraficas"
+	tabindex="-1"
+	role="dialog">
+
+	<div
+		class="modal-dialog modal-lg"
+		role="document">
+
 		<div class="modal-content">
-			<div class="modal-header" style="background:#6B1228;">
-				<h5 class="modal-title" style="color:#fff;">
-					<i class="fa fa-bar-chart"></i> Estadísticas de Tickets
+
+
+			<!-- HEADER -->
+			<div
+				class="modal-header"
+				style="background:#6B1228;">
+
+				<h5
+					class="modal-title"
+					style="color:#fff;">
+
+					<i class="fa fa-bar-chart"></i>
+					Estadísticas de Tickets
+
 				</h5>
-				<button type="button" class="close" data-dismiss="modal" style="color:#fff;">&times;</button>
+
+				<button
+					type="button"
+					class="close"
+					data-dismiss="modal"
+					style="color:#fff;">
+
+					&times;
+
+				</button>
+
 			</div>
+
+
+			<!-- BODY -->
 			<div class="modal-body">
+
 				<div class="row">
+
 					<div class="col-md-12">
-						<h6 style="color:#6B1228; text-align:center;">Tickets por mes (2026)</h6>
-						<div style="position:relative; height:300px; width:100%;">
+
+						<h6
+							style="
+								color:#6B1228;
+								text-align:center;
+							">
+
+							Tickets por mes (2026)
+
+						</h6>
+
+
+						<div
+							style="
+								position:relative;
+								height:300px;
+								width:100%;
+							">
+
 							<canvas id="graficaBarras"></canvas>
+
 						</div>
+
 					</div>
+
 				</div>
+
 			</div>
+
+
+			<!-- FOOTER -->
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+
+				<button
+					type="button"
+					class="btn btn-secondary"
+					data-dismiss="modal">
+
+					Cerrar
+
+				</button>
+
 			</div>
+
 		</div>
+
 	</div>
+
 </div>
 
 
+<!-- ========================================================= -->
+<!-- FOOTER -->
+<!-- ========================================================= -->
 
 <footer th:replace="fragmentos/footer :: pie-pagina"></footer>
+
 <div th:replace="fragmentos/scripts :: librerias-js"></div>
 
+
+<!-- ========================================================= -->
+<!-- JAVASCRIPT -->
+<!-- ========================================================= -->
+
 <script>
+
 	let chartBarras = null;
 
+
 	$('#modalGraficas').on('shown.bs.modal', function () {
-		const abiertos = parseInt($('#datosAbiertos').val()) || 0;
-		const cerrados = parseInt($('#datosCerrados').val()) || 0;				
-		
+
+		// =========================================
+		// OBTENER TOTALES
+		// =========================================
+
+		const abiertos =
+			parseInt($('#datosAbiertos').val()) || 0;
+
+		const cerrados =
+			parseInt($('#datosCerrados').val()) || 0;
+
+
+		// =========================================
+		// ARRAYS PARA LA GRÁFICA
+		// =========================================
 
 		const meses = [];
 		const abiertosMes = [];
 		const cerradosMes = [];
 
+
+		// =========================================
+		// OBTENER DATOS MENSUALES
+		// =========================================
+
 		$('.dato-mes').each(function () {
-			meses.push($(this).data('mes'));
-			abiertosMes.push(parseInt($(this).data('abiertos')));
-			cerradosMes.push(parseInt($(this).data('cerrados')));
+
+			const mes = $(this).data('mes');
+
+			const abiertos =
+				parseInt($(this).data('abiertos')) || 0;
+
+			const cerrados =
+				parseInt($(this).data('cerrados')) || 0;
+
+
+			meses.push(mes);
+
+			abiertosMes.push(abiertos);
+
+			cerradosMes.push(cerrados);
+
 		});
 
-		// Destruir solo si existen y tienen _view
-		try {if (chartBarras) chartBarras.destroy();} catch (e) { }
+
+		// =========================================
+		// DESTRUIR GRÁFICA ANTERIOR
+		// =========================================
+
+		try {
+
+			if (chartBarras) {
+				chartBarras.destroy();
+				chartBarras = null;
+			}
+
+		} catch (e) {
+
+			console.log(
+				'No se pudo destruir la gráfica anterior:',
+				e
+			);
+
+		}
+
+
+		// =========================================
+		// CREAR GRÁFICA
+		// =========================================
 
 		setTimeout(function () {
-			chartBarras = new Chart(document.getElementById('graficaBarras'), {
-				type: 'bar',
-				data: {
-					labels: meses,
-					datasets: [
-						{label: 'Abiertos', data: abiertosMes, backgroundColor: '#6B1228'},
-						{label: 'Cerrados', data: cerradosMes, backgroundColor: '#C8A951'}
-					]
-				},
-				options: {
-					responsive: true,
-					maintainAspectRatio: false,
-					legend: {display: true, position: 'bottom', labels: {fontSize: 12}},
-					scales: {yAxes: [{ticks: {beginAtZero: true, stepSize: 1}}]}
+
+			const canvas =
+				document.getElementById('graficaBarras');
+
+
+			if (!canvas) {
+
+				console.error(
+					'No se encontró el canvas graficaBarras'
+				);
+
+				return;
+			}
+
+
+			chartBarras = new Chart(
+				canvas,
+				{
+					type: 'bar',
+
+					data: {
+
+						labels: meses,
+
+						datasets: [
+
+							{
+								label: 'Abiertos',
+
+								data: abiertosMes,
+
+								backgroundColor: '#6B1228'
+							},
+
+							{
+								label: 'Cerrados',
+
+								data: cerradosMes,
+
+								backgroundColor: '#C8A951'
+							}
+
+						]
+
+					},
+
+					options: {
+
+						responsive: true,
+
+						maintainAspectRatio: false,
+
+						legend: {
+
+							display: true,
+
+							position: 'bottom',
+
+							labels: {
+
+								fontSize: 12
+
+							}
+
+						},
+
+						scales: {
+
+							yAxes: [
+
+								{
+
+									ticks: {
+
+										beginAtZero: true,
+
+										stepSize: 1
+
+									}
+
+								}
+
+							]
+
+						}
+
+					}
+
 				}
-			});
+			);
+
 		}, 300);
+
 	});
 
 </script>
+
 
 </body>
 
