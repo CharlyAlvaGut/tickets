@@ -16,15 +16,11 @@
 						</h3>
 					</div>
 					<!--
-					<a th:href="@{/ordenes/reporte/{pk_i_ticket}/{pk_i_anio}(pk_i_ticket=${cabecera.pk_i_ticket}, pk_i_anio=${cabecera.pk_i_anio})}"
-						class="btn btn-success btn-lg" title="Imprimir Ticket" target="_blank">
-						<i class="fa fa-print" aria-hidden="true"></i>
-					</a>
-					-->
 					<a href="#" class="btn btn-success btn-lg imprimir-ticket" title="Imprimir Ticket" target="_blank"
 						th:data-url="@{/ordenes/reporte/{pk_i_ticket}/{pk_i_anio}(pk_i_ticket=${cabecera.pk_i_ticket}, pk_i_anio=${cabecera.pk_i_anio})}">
 						<i class="fa fa-print" aria-hidden="true"></i>
 					</a>
+					-->
 					<a sec:authorize="hasAnyAuthority('PANEL', 'ADMIN')"
 						th:href="@{/ordenes/editar/{anio}/{ticketId}(anio=${cabecera.pk_i_anio}, ticketId=${cabecera.pk_i_ticket})}"
 						class="btn btn-warning btn-lg" title="Editar Ticket">
@@ -192,6 +188,7 @@
 						</a>
 					</div>
 				</div>
+				<!--
 				<div class="card">
 					<div class="card-header">
 						<ul class="nav nav-pills card-header-pills " id="navTabs" role="tablist">
@@ -207,12 +204,7 @@
 								<a class="nav-link" id="reasignar-tab" data-toggle="tab" href="#nota" role="tab"
 									aria-controls="nota" aria-selected="false">Nota Interna</a>
 							</li>
-							<!--
-							<li class="nav-item">
-								<a class="nav-link" id="reasignar-tab" data-toggle="tab" href="#fusion" role="tab"
-									aria-controls="fusion" aria-selected="false">Fusionar</a>
-							</li>
-							-->
+							
 							<li class="nav-item">
 								<a class="nav-link" id="cerrar-tab" data-toggle="tab" href="#cerrar" role="tab"
 									aria-controls="cerrar" aria-selected="false"
@@ -300,6 +292,7 @@
 						</div>
 					</div>
 				</div>
+				-->
 			</div>
 		</div>
 	</section>

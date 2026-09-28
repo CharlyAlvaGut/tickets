@@ -10,7 +10,9 @@
 				<div th:if="${error != null}" class="alert alert-danger" role="alert" th:text="${error}"></div>
 
 				<div class="card-body">
-					<form id="ticketForm" th:action="@{/ordenes/guardar}" method="post" th:object="${ticketDTO}"
+					<!--form id="ticketForm" th:action="@{/ordenes/guardar}" method="post" th:object="${ticketDTO}"
+						enctype="multipart/form-data"-->
+					<form id="ticketForm" action="#" method="post" th:object="${ticketDTO}"
 						enctype="multipart/form-data">
 						<input type="hidden" th:field="*{pk_i_ticket}" />
 						<input type="hidden" th:field="*{pk_i_anio}" />
@@ -120,7 +122,7 @@
 </div>
 <div th:replace="fragmentos/scripts :: librerias-js"></div>
 <script>
-
+/*
 	const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1 MB
 	const ALLOWED_TYPES = ['application/pdf', 'image/png', 'image/jpeg'];
 
@@ -177,7 +179,7 @@
 		});
 
 
-		/**/
+
 		//Autocompletar
 		$("#numemp").autocomplete({
 			source: function (request, response) {
@@ -293,6 +295,7 @@
 			//$("#areaAyuda").val(asuntoId);
 		}
 	});
+	*/
 </script>
 </body>
 

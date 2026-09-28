@@ -5,11 +5,11 @@ Charly: Corregir diagrama de casos de uso para Gestionar catálogos (-----------
 Charly: Diagrama de clases. (------------------------------------> OK <------------------------------------)
 Charly: Entidad relación (------------------------------------> OK <------------------------------------)
 
-Ricsan: Hacer el diagrama de arquitectura. Foto adjunta
+Ricsan: Hacer el diagrama de arquitectura. Foto adjunta (------------------------------------> OK <------------------------------------)
 
 Capitulo 1. Revisar objetivos (no prioridad)
 
-Capitulo 2. Irlo llenando poco a poco
+Capitulo 2. Irlo llenando poco a poco (------------------------------------> CASI OK <------------------------------------)
 
 Capitulo 3. Irlo llenando poco a poco (no prioridad)
 

@@ -8,6 +8,7 @@
 					<div class="container">
 						<h3 th:text="${titulo}"></h3>
 						<p th:text="${texto}"></p>
+						<!--
 						<form id="formFiltros" th:if="${mostrarForm}" th:action="@{/ordenes/buscar}" method="get"
 							class="container mt-3">
 							<div class="row g-3 align-items-end">
@@ -51,7 +52,7 @@
 								</div>
 							</div>
 						</form>
-
+						-->
 					</div>
 				</div>
 				<div th:if="${mensaje != null}" class="alert alert-success" role="alert" th:text="${mensaje}"></div>
