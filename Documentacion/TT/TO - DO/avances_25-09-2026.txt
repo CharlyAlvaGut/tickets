@@ -9,7 +9,7 @@ Ricsan: Hacer el diagrama de arquitectura. Foto adjunta (-----------------------
 
 Capitulo 1. Revisar objetivos (no prioridad)
 
-Capitulo 2. Irlo llenando poco a poco (------------------------------------> CASI OK <------------------------------------)
+Capitulo 2. Irlo llenando poco a poco (------------------------------------> OK (Sólo falta la tabla comparativa)<------------------------------------)
 
 Capitulo 3. Irlo llenando poco a poco (no prioridad)
 
