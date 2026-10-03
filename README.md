@@ -30,7 +30,7 @@ asignar y dar seguimiento a órdenes de servicio (tickets) de manera eficiente y
 |------|-----------|
 | Backend | Java 17 + Spring Boot |
 | Frontend | Thymeleaf + Bootstrap 4 |
-| Base de datos | MySQL |
+| Base de datos | MariaDB |
 | Seguridad | Spring Security |
 | Correo | Spring Mail (SMTP) |
 
@@ -61,8 +61,8 @@ asignar y dar seguimiento a órdenes de servicio (tickets) de manera eficiente y
 
 ---
 
-## Autor
-Desarrollado por **José Carlos Alvarado Gutiérrez** — Estudiante del Instituto Politécnico Nacional  
+## Autores
+Desarrollado por **José Carlos Alvarado Gutiérrez** y **Ricardo San Agustín Alcivar** — Estudiantes del Instituto Politécnico Nacional  
 Escuela Superior de Cómputo (ESCOM)
 
 ---
