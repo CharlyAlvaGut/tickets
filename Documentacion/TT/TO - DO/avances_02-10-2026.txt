@@ -1,0 +1,43 @@
+Avances para viernes 02 de octubre de 2026
+
+Casos de Uso
+Charly: Seccionar clases
+Ricsan: Diagrama de clases.
+
+Capitulo 2. Tabla comparativa (Ricsan)
+
+Capitulo 3. Ir llenando brutalmente (Charly y Ricsan uwu)
+
+Capitulo 4. Acabar con los costos (------------------------------------> OK <------------------------------------)
+
+Capítulo 5. Dar orden en casos de uso (------------------------------------> OK <------------------------------------)
+
+
+En todo el documento revisar referencias.
+
+Plantear un requerimiento funcional y luego ya irlo seccionando
+
+Fundamentar RNF
+
+RFN 1 y 2 son RF
+
+Reglas de negocio poner un ejemplo positivo y negativo 
+
+Como validar una justificación de  reasignación 
+
+Coherencia entre terminologías
+
+Diagrama de clases atributos 
+
+Manejo de versiones correctos (------------------------------------> OK <------------------------------------)
+
+Definirnos un rol y cuánto ganamos a 10 meses (------------------------------------> OK <------------------------------------)
+
+Listar cosas que no tengan costo (------------------------------------> OK <------------------------------------)
+
+Todo eso es SÓLO EL COSTO DE DESARROLLO (------------------------------------> OK <------------------------------------)
+
+impacto legal del mal uso del sistema 
+
+
+Preguntar a UDI características de servidor (mencionar que es un proyecto de Asunción)

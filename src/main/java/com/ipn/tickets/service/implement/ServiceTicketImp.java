@@ -44,7 +44,7 @@ public class ServiceTicketImp implements ITicketService {
 
 	@Autowired
 	private IUsuarioService serviceUsuario;
-	
+
 	@Autowired
 	private IEmailService emailService;
 
@@ -57,7 +57,7 @@ public class ServiceTicketImp implements ITicketService {
 
 		if (ticketId != null && ticketAnio != null) {
 			ticket = buscarTicketPorId(ticketId, ticketAnio);
-			
+
 		}
 
 		if (ticket == null) {
@@ -79,47 +79,42 @@ public class ServiceTicketImp implements ITicketService {
 		ticket.setPk_i_folio(ticketDTO.getPk_i_folio() != null ? ticketDTO.getPk_i_folio() : 0);
 		ticket.setPk_i_fuente(ticketDTO.getPk_i_fuente());
 		ticket.setC_n_usucap(ticketDTO.getC_n_usucap());
-		//ticket.setD_f_fechcap(ticketDTO.getD_f_fechcap());
+		// ticket.setD_f_fechcap(ticketDTO.getD_f_fechcap());
 		ticket.setW_v_status(ticketDTO.getW_v_status());
 
 		repoTickets.save(ticket);
-		
-		//Se envía correo
-		boolean esNuevo = (ticketId == null || ticketAnio == null);
 
-		try {
-		    String correoDestino = repoUsuarios.findCorreoByIdUsuario(ticketDTO.getC_i_numempasigna());
-
-		    
-		    if (correoDestino != null && !correoDestino.isEmpty()) {
-		        String subject;
-		        String body;
-
-		        if (esNuevo) {
-		            subject = "Ticket #" + ticket.getPk_i_ticket() + " creado exitosamente";
-		            body = "Se ha creado tu ticket con folio " + ticket.getPk_i_ticket() +
-		                   " del año " + ticket.getPk_i_anio() + ".\n" +
-		                   "Asunto: " + ticket.getD_v_asunto() + "\n" +
-		                   "Estatus: Abierto";
-		        } else {
-		            subject = "Ticket #" + ticket.getPk_i_ticket() + " actualizado";
-		            body = "Tu ticket con folio " + ticket.getPk_i_ticket() +
-		                   " del año " + ticket.getPk_i_anio() + " ha sido actualizado.\n" +
-		                   "Asunto: " + ticket.getD_v_asunto() + "\n" +
-		                   "Estatus actual: " + ticket.getPk_i_estado();
-		        }
-
-		        emailService.enviarCorreo(correoDestino, subject, body);
-		    }
-
-		} catch (Exception ex) {
-		    System.out.println("Error al enviar correo: " + ex.getLocalizedMessage());
-		}
-		
+		/*
+		 * Se envía correo boolean esNuevo = (ticketId == null || ticketAnio == null);
+		 * 
+		 * try { String correoDestino =
+		 * repoUsuarios.findCorreoByIdUsuario(ticketDTO.getC_i_numempasigna());
+		 * 
+		 * 
+		 * if (correoDestino != null && !correoDestino.isEmpty()) { String subject;
+		 * String body;
+		 * 
+		 * if (esNuevo) { subject = "Ticket #" + ticket.getPk_i_ticket() +
+		 * " creado exitosamente"; body = "Se ha creado tu ticket con folio " +
+		 * ticket.getPk_i_ticket() + " del año " + ticket.getPk_i_anio() + ".\n" +
+		 * "Asunto: " + ticket.getD_v_asunto() + "\n" + "Estatus: Abierto"; } else {
+		 * subject = "Ticket #" + ticket.getPk_i_ticket() + " actualizado"; body =
+		 * "Tu ticket con folio " + ticket.getPk_i_ticket() + " del año " +
+		 * ticket.getPk_i_anio() + " ha sido actualizado.\n" + "Asunto: " +
+		 * ticket.getD_v_asunto() + "\n" + "Estatus actual: " + ticket.getPk_i_estado();
+		 * }
+		 * 
+		 * emailService.enviarCorreo(correoDestino, subject, body); }
+		 * 
+		 * } catch (Exception ex) { System.out.println("Error al enviar correo: " +
+		 * ex.getLocalizedMessage()); } //
+		 */
 
 		if (ticketDTO.getD_b_documento() != null && !ticketDTO.getD_b_documento().isEmpty()) {
 			try {
+
 				CDocumento doc = new CDocumento();
+
 				doc.setPk_i_ticket(ticket.getPk_i_ticket());
 				doc.setPk_i_anio(ticket.getPk_i_anio());
 				doc.setD_v_nomdocto(ticketDTO.getD_v_nomdocto());
@@ -133,8 +128,7 @@ public class ServiceTicketImp implements ITicketService {
 				repoDocumento.save(doc);
 
 			} catch (Exception ex) {
-				System.out
-						.println("Error al agregar/actualizar registro en d_documento! :( " + ex.getLocalizedMessage());
+				System.out.println("Error al agregar/actualizar registro en d_documento! :( " + ex.getLocalizedMessage());
 			}
 		}
 	}
@@ -142,10 +136,10 @@ public class ServiceTicketImp implements ITicketService {
 	@Override
 	public List<TicketDTO> buscarTodos(Integer c_i_usuario) {
 		List<TicketDTO> lista = repoTickets.findAllTickets(c_i_usuario);
-		if(lista == null || lista.isEmpty()) {
+		if (lista == null || lista.isEmpty()) {
 			lista = repoTickets.findTicketsByUsuario(c_i_usuario);
 		}
-		
+
 		return lista;
 	}
 
@@ -173,7 +167,6 @@ public class ServiceTicketImp implements ITicketService {
 		}
 		ticket.setC_n_usucierre(c_n_usucap);
 		repoTickets.save(ticket);
-		
 
 	}
 
@@ -198,7 +191,7 @@ public class ServiceTicketImp implements ITicketService {
 			dto.setPk_i_estado(ticket.getPk_i_estado());
 			dto.setPk_i_vigencia(ticket.getPk_i_vigencia());
 			dto.setPk_i_folio(ticket.getPk_i_folio());
-			//dto.setPk_i_fuente(ticket.getPk_i_fuente());
+			// dto.setPk_i_fuente(ticket.getPk_i_fuente());
 			dto.setC_n_usucap(ticket.getC_n_usucap());
 			dto.setD_f_fechcap(ticket.getD_f_fechcap());
 			dto.setW_v_status(ticket.getW_v_status());
@@ -228,7 +221,7 @@ public class ServiceTicketImp implements ITicketService {
 		dto.setPk_i_estado(ticket.getPk_i_estado());
 		dto.setPk_i_vigencia(ticket.getPk_i_vigencia());
 		dto.setPk_i_folio(ticket.getPk_i_folio());
-		//dto.setPk_i_fuente(ticket.getPk_i_fuente());
+		// dto.setPk_i_fuente(ticket.getPk_i_fuente());
 		dto.setC_n_usucap(ticket.getC_n_usucap());
 		dto.setD_f_fechcap(ticket.getD_f_fechcap());
 		dto.setW_v_status(ticket.getW_v_status());
@@ -241,26 +234,23 @@ public class ServiceTicketImp implements ITicketService {
 		return dto;
 	}
 
-
 	@Override
 	public List<EstadisticasDTO> obtenerCantidadUsuarios(String email) {
 		List<Object[]> results = repoUsuarios.findCantidadTickets(email);
 		return results.stream().map(row -> new EstadisticasDTO((String) row[0], ((Number) row[1]).intValue(),
 				((Number) row[2]).intValue(), ((Number) row[3]).intValue())).collect(Collectors.toList());
 	}
-	
+
 	@Override
 	public List<EstadisticasDTO> obtenerTicketsPorMes(String email) {
-	    List<Object[]> results = repoUsuarios.findTicketsPorMes(email);
-	    return results.stream().map(row -> new EstadisticasDTO(
-	        (String) row[0],                    // area (mes en texto)
-	        ((Number) row[1]).intValue(),        // num_mes
-	        ((Number) row[2]).intValue(),        // cantidad_abiertos
-	        ((Number) row[3]).intValue(),        // cantidad_cerrados
-	        0                                    // cantidad_totales no aplica aquí
-	    )).collect(Collectors.toList());
+		List<Object[]> results = repoUsuarios.findTicketsPorMes(email);
+		return results.stream().map(row -> new EstadisticasDTO((String) row[0], // area (mes en texto)
+				((Number) row[1]).intValue(), // num_mes
+				((Number) row[2]).intValue(), // cantidad_abiertos
+				((Number) row[3]).intValue(), // cantidad_cerrados
+				0 // cantidad_totales no aplica aquí
+		)).collect(Collectors.toList());
 	}
-
 
 	@Override
 	public CabeceraDTO obtenerCabecera(Integer pk_i_ticket, Integer pk_i_anio) {
@@ -275,7 +265,7 @@ public class ServiceTicketImp implements ITicketService {
 	@Override
 	public TicketDTO obtenerTicketPorId(Integer pk_i_ticket, Integer pk_i_anio) {
 		TicketDTO ticket = repoTickets.findTicketById(pk_i_ticket, pk_i_anio);
-		//ticket.setPk_i_asunto(repoTickets.findTipoAsunto(pk_i_ticket, pk_i_anio));
+		// ticket.setPk_i_asunto(repoTickets.findTipoAsunto(pk_i_ticket, pk_i_anio));
 		return ticket;
 	}
 
@@ -297,8 +287,5 @@ public class ServiceTicketImp implements ITicketService {
 				row[1] != null ? ((Number) row[1]).intValue() : null, (String) row[2], ((Number) row[3]).intValue(),
 				(java.sql.Timestamp) row[4], row[5] != null ? row[5].toString() : null)).collect(Collectors.toList());
 	}
-
-	
-
 
 }

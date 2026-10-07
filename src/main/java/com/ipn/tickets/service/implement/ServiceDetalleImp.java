@@ -65,20 +65,20 @@ public class ServiceDetalleImp implements IDetalleService {
 			detalle.setW_v_status(detalleDTO.getW_v_status());
 
 			if (detalleDTO.getD_b_respuesta_form() != null && !detalleDTO.getD_b_respuesta_form().isEmpty()) {
-				CDocumentoPK pk = new CDocumentoPK(detalleDTO.getPk_i_ticket(), detalleDTO.getPk_i_anio(), 1);
+				//CDocumentoPK pk = new CDocumentoPK(detalleDTO.getPk_i_ticket(), detalleDTO.getPk_i_anio(), 1);
 				CDocumento documento;
 
 				// Verificar si ya existe el documento
-				if (repoDocumento.existsById(pk)) {
-					documento = repoDocumento.getById(pk); 
-				} else {
+				//if (repoDocumento.existsById(pk)) {
+					//documento = repoDocumento.getById(pk); 
+				//} else {
 					documento = new CDocumento(); // Creamos uno nuevo
 					int consecDoc = repoDocumento.findMaxDoc(detalleDTO.getPk_i_ticket(), detalleDTO.getPk_i_anio());
 					documento.setD_n_consec(consecDoc + 1);
 					documento.setPk_i_ticket(detalleDTO.getPk_i_ticket());
 					documento.setPk_i_anio(detalleDTO.getPk_i_anio());
 					documento.setPk_i_tipodoc(2); // En este caso es respuesta
-				}
+				//}
 
 				// Campos comunes (tanto para update como para nuevo)
 				documento.setD_v_nomdocto(detalleDTO.getD_v_nomdocto());
