@@ -51,12 +51,13 @@ public class jcHome {
 			return "redirect:/login";
 		}
 		String email = auth.getName();
-		System.out.println("Correo autenticado: " + email);
-		System.out.println("Roles:");
+		//System.out.println("Correo autenticado: " + email);
+		//System.out.println("Roles:");
+		/*
 		for (GrantedAuthority rol : auth.getAuthorities()) {
 			System.out.println("-" + rol.getAuthority());
 		}
-
+		*/
 		/*
 		 * Primero se recomienda validar si existe un objeto en la sesión antes de crear
 		 * uno

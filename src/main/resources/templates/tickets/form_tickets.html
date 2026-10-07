@@ -1,4 +1,4 @@
-<div th:replace="fragmentos/top::top"></div>
+<div th:replace="~{fragmentos/top::top}"></div>
 <!-- page content -->
 <div class="right_col" role="main" style="padding-bottom: 100px;">
 	<section class="content">
@@ -116,11 +116,11 @@
 </div>
 
 
-<footer th:replace="fragmentos/footer :: pie-pagina"></footer>
+<footer th:replace="~{fragmentos/footer :: pie-pagina}"></footer>
 </div>
-<div th:replace="fragmentos/scripts :: librerias-js"></div>
+<div th:replace="~{fragmentos/scripts :: librerias-js}"></div>
 <script>
-/**/
+	/**/
 	const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1 MB
 	const ALLOWED_TYPES = ['application/pdf', 'image/png', 'image/jpeg'];
 
@@ -269,29 +269,36 @@
 			});
 		});
 		setFecha();
-
+		/**/
 		let numempId = $("#numempId").val();
 		let asignadoId = $("#asignadoId").val();
 		//let asuntoId = $("#asuntoID").val();
 
 
 		if (numempId && asignadoId) {
-			//$('#numemp').val(numempId);
+
+			console.log(numempId);
+			console.log(asignadoId);
+
 			$('#btnEnviar').text('Actualizar Ticket');
 
-			$.getJSON('buscaelementos', {palabra: numempId}, function (data) {
+			$.getJSON('/tickets/ordenes/buscaelementos', {palabra: numempId}, function (data) {
 				let usuario = data.find(u => u.c_i_usuario == numempId);
+				
 				if (usuario) {
 					//let valor = usuario.c_i_usuario + " | " + usuario.d_v_nombre + " | " + usuario.c_i_adscrip;
-					let valor = usuario.d_v_nombre + " | " + usuario.c_i_adscrip;
+					let valor = usuario.d_v_nombre + " | " + usuario.c_i_adscrip + " | " + usuario.c_i_adscripNva;
 					$("#numemp").val(valor);
 					$("#numempAds").val(usuario.c_i_adscrip);
+					console.log("Valor => " + valor);
 				}
 			});
 
 			recargarLista(asignadoId);
 			//$("#areaAyuda").val(asuntoId);
 		}
+		//*/
+
 	});
 	//*/
 </script>

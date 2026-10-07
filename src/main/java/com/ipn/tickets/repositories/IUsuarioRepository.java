@@ -49,15 +49,13 @@ public interface IUsuarioRepository extends JpaRepository<CUsuario, Integer> {
 				b.d_f_fechcap, b.w_v_status
 			FROM c_usuario a
 			INNER JOIN c_adscrip b ON a.c_i_adscri = b.c_i_adscrip
-			WHERE CAST(a.d_v_email AS CHAR) LIKE CONCAT('%', :palabra, '%') OR a.d_v_nombre LIKE CONCAT('%', :palabra, '%');
+			WHERE CAST(a.d_v_email AS CHAR) LIKE CONCAT('%', :palabra, '%') OR a.d_v_nombre LIKE CONCAT('%', :palabra, '%') OR a.c_i_usuario LIKE CONCAT('%', :palabra, '%');
 			""", nativeQuery = true)
 	List<Object[]> findByWord(@Param("palabra") String palabra);
 
 	@Query(value = "SELECT a.c_i_usuario, a.d_v_nombre, a.c_i_adscri, a.d_v_password, a.pk_i_perfil, a.w_v_status, a.d_v_email FROM c_usuario a WHERE a.c_i_adscri = :c_i_adscrip", nativeQuery = true)
 	List<Object[]> findByArea(@Param("c_i_adscrip") String c_i_adscrip);
 
-	
-	
 	@Query(value = """
 			SELECT
 			  CONCAT(a.d_v_nombre,' - ',a.d_v_email) AS area,
@@ -71,20 +69,20 @@ public interface IUsuarioRepository extends JpaRepository<CUsuario, Integer> {
 			ORDER BY a.d_v_nombre;
 						""", nativeQuery = true)
 	List<Object[]> findCantidadTickets(@Param("email") String email);
-	
+
 	@Query(value = """
-	        SELECT 
-	            DATE_FORMAT(t.d_f_fecha, '%M') AS area,
-	            MONTH(t.d_f_fecha) AS num_mes,
-	            SUM(CASE WHEN t.pk_i_estado = 1 THEN 1 ELSE 0 END) AS cantidad_abiertos,
-	            SUM(CASE WHEN t.pk_i_estado = 2 THEN 1 ELSE 0 END) AS cantidad_cerrados
-	        FROM c_usuario a
-	        INNER JOIN m_ticket t ON a.c_i_usuario = t.c_i_numempasigna
-	        WHERE a.d_v_email = :email
-	        AND YEAR(t.d_f_fecha) = YEAR(CURDATE())
-	        GROUP BY MONTH(t.d_f_fecha), DATE_FORMAT(t.d_f_fecha, '%M')
-	        ORDER BY num_mes ASC
-	        """, nativeQuery = true)
+			SELECT
+			    DATE_FORMAT(t.d_f_fecha, '%M') AS area,
+			    MONTH(t.d_f_fecha) AS num_mes,
+			    SUM(CASE WHEN t.pk_i_estado = 1 THEN 1 ELSE 0 END) AS cantidad_abiertos,
+			    SUM(CASE WHEN t.pk_i_estado = 2 THEN 1 ELSE 0 END) AS cantidad_cerrados
+			FROM c_usuario a
+			INNER JOIN m_ticket t ON a.c_i_usuario = t.c_i_numempasigna
+			WHERE a.d_v_email = :email
+			AND YEAR(t.d_f_fecha) = YEAR(CURDATE())
+			GROUP BY MONTH(t.d_f_fecha), DATE_FORMAT(t.d_f_fecha, '%M')
+			ORDER BY num_mes ASC
+			""", nativeQuery = true)
 	List<Object[]> findTicketsPorMes(@Param("email") String email);
 
 }
