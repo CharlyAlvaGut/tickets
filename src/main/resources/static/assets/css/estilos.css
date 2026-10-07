@@ -541,7 +541,20 @@ footer.sticky-footer {
 /* Topbar */
 .nav_menu { background: #fff !important; border-bottom: 1px solid #eee !important; }
 
+/* Color guinda para las pills activas */
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  background-color: #9b002b; /* guinda */
+  border-color: #9b002b;
+  color: #fff;
+}
 
+/* Opcional: hover un poco más claro */
+.nav-pills .nav-link:hover {
+  background-color: #9b002b;
+  border-color: #9b002b;
+  color: #fff;
+}
 
 /* Botones guinda */
 .btn-primary {
