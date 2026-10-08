@@ -1,10 +1,10 @@
 Avances para viernes 02 de octubre de 2026
 
 Casos de Uso
-Charly: Seccionar clases
-Ricsan: Diagrama de clases.
+Charly: Seccionar clases (------------------------------------> OK <------------------------------------)
+Ricsan: Diagrama de clases. (------------------------------------> OK <------------------------------------)
 
-Capitulo 2. Tabla comparativa (Ricsan)
+Capitulo 2. Tabla comparativa (Ricsan) (------------------------------------> OK <------------------------------------)
 
 Capitulo 3. Ir llenando brutalmente (Charly y Ricsan uwu)
 
@@ -15,19 +15,19 @@ Capítulo 5. Dar orden en casos de uso (------------------------------------> OK
 
 En todo el documento revisar referencias.
 
-Plantear un requerimiento funcional y luego ya irlo seccionando
+Plantear un requerimiento funcional y luego ya irlo seccionando (------------------------------------> OK <------------------------------------)
 
 Fundamentar RNF
 
 RFN 1 y 2 son RF
 
-Reglas de negocio poner un ejemplo positivo y negativo 
+Reglas de negocio poner un ejemplo positivo y negativo (------------------------------------> OK <------------------------------------)
 
-Como validar una justificación de  reasignación 
+Como validar una justificación de  reasignación (------------------------------------> OK <------------------------------------)
 
 Coherencia entre terminologías
 
-Diagrama de clases atributos 
+Diagrama de clases atributos (------------------------------------> OK <------------------------------------)
 
 Manejo de versiones correctos (------------------------------------> OK <------------------------------------)
 
@@ -37,7 +37,7 @@ Listar cosas que no tengan costo (------------------------------------> OK <----
 
 Todo eso es SÓLO EL COSTO DE DESARROLLO (------------------------------------> OK <------------------------------------)
 
-impacto legal del mal uso del sistema 
+impacto legal del mal uso del sistema (------------------------------------> OK <------------------------------------)
 
 
 Preguntar a UDI características de servidor (mencionar que es un proyecto de Asunción)
