@@ -55,24 +55,6 @@ public class CWebSecurity {
 				// Las vistas publicas no requieren autorización
 				.requestMatchers("/").permitAll()
 
-				/*
-				 * Asignar permisos a las URL's por ROLES En este caso los administradores
-				 * tienen acceso a todas las vistas mientras que los supervisores no pueden ver
-				 * el apartado de usuarios: EJEMPLO
-				 * 
-				 * 
-				 * 
-				 * .requestMatchers("/solicitudes/create/**",
-				 * "/solicitudes/save/**").hasAnyAuthority("USUARIO")
-				 * .requestMatchers("/solicitudes/**").hasAnyAuthority("SUPERVISOR",
-				 * "ADMINISTRADOR")
-				 * .requestMatchers("/vacantes/**").hasAnyAuthority("SUPERVISOR",
-				 * "ADMINISTRADOR")
-				 * .requestMatchers("/categorias/**").hasAnyAuthority("SUPERVISOR",
-				 * "ADMINISTRADOR")
-				 * .requestMatchers("/usuarios/**").hasAnyAuthority("ADMINISTRADOR")
-				 */
-
 				// Todas las demás URL's de la aplicación requieren autenticación
 				.anyRequest().authenticated());
 
