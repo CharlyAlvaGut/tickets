@@ -13,19 +13,19 @@ Capitulo 4. Acabar con los costos (------------------------------------> OK <---
 Capítulo 5. Dar orden en casos de uso (------------------------------------> OK <------------------------------------)
 
 
-En todo el documento revisar referencias.
+En todo el documento revisar referencias. (------------------------------------> OK <------------------------------------)
 
 Plantear un requerimiento funcional y luego ya irlo seccionando (------------------------------------> OK <------------------------------------)
 
-Fundamentar RNF
+Fundamentar RNF (------------------------------------> OK <------------------------------------)
 
-RFN 1 y 2 son RF
+RFN 1 y 2 son RF (------------------------------------> De momento solo RNF05 Trazabilidad a RF17 <------------------------------------)
 
 Reglas de negocio poner un ejemplo positivo y negativo (------------------------------------> OK <------------------------------------)
 
 Como validar una justificación de  reasignación (------------------------------------> OK <------------------------------------)
 
-Coherencia entre terminologías
+Coherencia entre terminologías (------------------------------------> OK <------------------------------------)
 
 Diagrama de clases atributos (------------------------------------> OK <------------------------------------)
 
