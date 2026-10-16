@@ -74,8 +74,8 @@ public interface ITicketRepository extends JpaRepository<CTicket, CTicketPK> {
 			INNER JOIN c_estado b ON a.pk_i_estado = b.pk_i_estado
 			INNER JOIN c_usuario c ON a.c_i_numemp = c.c_i_usuario
 			INNER JOIN c_usuario d ON a.c_i_numempasigna = d.c_i_usuario
-			INNER JOIN d_usuarioadscrip ua ON a.c_i_adscripasigna = ua.c_i_adscrip
-			WHERE ua.c_i_usuario = :c_i_usuario
+			-- INNER JOIN d_usuarioadscrip ua ON a.c_i_adscripasigna = ua.c_i_adscrip
+			-- WHERE ua.c_i_usuario = :c_i_usuario
 			ORDER BY a.d_f_fecha DESC, a.pk_i_ticket DESC;
 							""", nativeQuery = true)
 	List<TicketDTO> findAllTickets(@Param("c_i_usuario") int c_i_usuario);

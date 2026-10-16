@@ -188,7 +188,7 @@
 						</a>
 					</div>
 				</div>
-				
+
 				<div class="card">
 					<div class="card-header">
 						<ul class="nav nav-pills card-header-pills " id="navTabs" role="tablist">
@@ -204,7 +204,7 @@
 								<a class="nav-link" id="reasignar-tab" data-toggle="tab" href="#nota" role="tab"
 									aria-controls="nota" aria-selected="false">Nota Interna</a>
 							</li>
-							
+
 							<li class="nav-item">
 								<a class="nav-link" id="cerrar-tab" data-toggle="tab" href="#cerrar" role="tab"
 									aria-controls="cerrar" aria-selected="false"
@@ -215,12 +215,15 @@
 
 					<div class="card-body">
 						<div class="tab-content" id="myTabContent">
-							<!--
+
 							<div class="tab-pane fade show active" id="respuesta" role="tabpanel"
 								aria-labelledby="respuesta-tab">
 								<h5 class="card-title">Responder</h5>
+								<!--
 								<form th:action="@{/ordenes/respuesta}" method="post" th:object="${detalleDTO}"
 									enctype="multipart/form-data">
+									-->
+								<form th:object="${detalleDTO}" enctype="multipart/form-data">
 									<div class="form-group">
 										<label for="lblResp">Respuesta</label>
 										<textarea th:field="*{d_v_comentario}" class="form-control" id="d_v_respuesta"
@@ -235,15 +238,21 @@
 										<input th:field="*{d_b_respuesta_form}" type="file" class="form-control"
 											accept="application/pdf, image/png, image/jpeg" id="adjuntos">
 									</div>
+									<!--
 									<button type="submit" class="btn btn-primary">Responder</button>
+									-->
+									<button class="btn btn-primary">Responder</button>
 								</form>
 							</div>
-							-->
-							
-							<!--
+
+
+
 							<div class="tab-pane fade" id="reasignar" role="tabpanel" aria-labelledby="reasignar-tab">
 								<h5 class="card-title">Reasignar</h5>
+								<!--
 								<form th:action="@{/ordenes/turnado}" method="post" th:object="${detalleDTO}">
+								-->
+								<form th:object="${detalleDTO}">
 									<div class="form-group">
 										<label for="lblPersonal">Personal</label>
 										<select th:field="*{c_i_numemp}" class="custom-select" id="cmbPersonal">
@@ -261,15 +270,20 @@
 									</div>
 									<input name="pk_i_ticket" th:value="${cabecera.pk_i_ticket}" type="hidden">
 									<input name="pk_i_anio" th:value="${cabecera.pk_i_anio}" type="hidden">
+									<!--
 									<button type="submit" class="btn btn-primary">Reasignar</button>
+									-->
+									<button class="btn btn-primary">Reasignar</button>
 								</form>
 							</div>
-							-->
-							
-							<!--
+
+
 							<div class="tab-pane fade" id="nota" role="tabpanel" aria-labelledby="reasignar-tab">
 								<h5 class="card-title">Nota Interna</h5>
+								<!--
 								<form th:action="@{/ordenes/nota}" method="post" th:object="${detalleDTO}">
+								-->
+								<form th:object="${detalleDTO}">
 
 									<div class="form-group">
 										<label for="lblResp">Nota</label>
@@ -278,26 +292,33 @@
 										<input name="pk_i_ticket" th:value="${cabecera.pk_i_ticket}" type="hidden">
 										<input name="pk_i_anio" th:value="${cabecera.pk_i_anio}" type="hidden">
 									</div>
+									<!--
 									<button type="submit" class="btn btn-primary">Comentar</button>
+									-->
+									<button class="btn btn-primary">Comentar</button>
 								</form>
 							</div>
-							-->
 
-							<!--
+
 							<div class="tab-pane fade" id="cerrar" role="tabpanel" aria-labelledby="cerrar-tab">
+								<!--
 								<button type="button"
 									th:onclick="|cambiar_estado(${cabecera.pk_i_ticket}, ${cabecera.pk_i_anio}, ${cabecera.pk_i_estado})|"
 									th:class="'btn btn-lg btn-block ' + (${cabecera.pk_i_estado == 2} ? 'btn-success' : 'btn-danger')"
 									th:text="${cabecera.pk_i_estado == 2} ? 'Reabrir' : 'Cerrar'">
 								</button>
-
+								-->
+								<button type="button"
+									th:class="'btn btn-lg btn-block ' + (${cabecera.pk_i_estado == 2} ? 'btn-success' : 'btn-danger')"
+									th:text="${cabecera.pk_i_estado == 2} ? 'Reabrir' : 'Cerrar'">
+								</button>
 							</div>
-							-->
-							
+
+
 						</div>
 					</div>
 				</div>
-				
+
 			</div>
 		</div>
 	</section>
