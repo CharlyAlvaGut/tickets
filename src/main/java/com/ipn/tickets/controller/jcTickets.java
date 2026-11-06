@@ -152,7 +152,6 @@ public class jcTickets {
 		if (session.getAttribute("usuario") == null) {
 			return "redirect:/login";
 		}
-/**/
 		if (ticketDTO.getD_b_documento() != null && !ticketDTO.getD_b_documento().isEmpty()) {
 
 			long maxSize = 1 * 1024 * 1024; // 1 MB
@@ -168,7 +167,7 @@ public class jcTickets {
 		ticketDTO.setC_n_usucap(user.getC_i_usuario());
 		ticketDTO.setPk_i_asunto(pk_i_asunto);
 		serviceTickets.guardarTicket(ticketDTO);
-//*/
+
 		atributos.addFlashAttribute("mensaje", "El Ticket ha sido abierto correctamente!!");
 
 		return "redirect:/ordenes/mostrar";
